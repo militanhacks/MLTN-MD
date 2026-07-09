@@ -4,9 +4,11 @@
 
 <!-- PICTURE 1: Main banner/logo image goes here — recommend a wide anime banner (Solo Leveling style, dark/purple theme) -->
 <div style="text-align: center;">
+  <p align="center">
   <a href="https://i.ibb.co/wNStJ54H/image.png">
-    <img src="https://i.ibb.co/wNStJ54H/image.png" alt="MLTN-MD Banner" border="0" />
-</a>
+    <img src="https://i.ibb.co/wNStJ54H/image.png" alt="MLTN-MD Banner" width="70%" border="0" />
+  </a>
+</p>
   <hr style="margin-top: 20px; margin-bottom: 20px;"/>
 </div>
 
