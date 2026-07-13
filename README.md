@@ -1,5 +1,6 @@
 <h1 align="center">⛧ 𝗠𝗟𝗧𝗡-𝗠𝗗 ⛧</h1>
 
+<<<<<<< HEAD
 <!-- PICTURE 1: Main banner/logo image goes here -->
 <div align="center">
   <a href="https://i.ibb.co/wNStJ54H/image.png">
@@ -19,6 +20,18 @@
   <img src="https://img.shields.io/badge/RANK-SHADOW%20MONARCH-purple?style=for-the-badge" alt="rank" />
 
   <hr style="margin-top: 30px; margin-bottom: 30px; border: none; height: 1px; background: linear-gradient(to right, transparent, #9d00ff, transparent);"/>
+=======
+<h1 align="center">"Awaken. Loyalty is a luxury for the weak; power is the only currency that never depreciates. Step out of the ashes and rewrite the rules from the dark. 👑⛓️"</h1>
+
+<!-- PICTURE 1: Main banner/logo image goes here — recommend a wide anime banner (Solo Leveling style, dark/purple theme) -->
+<div style="text-align: center;">
+  <p align="center">
+  <a href="https://i.ibb.co/wNStJ54H/image.png">
+    <img src="https://i.ibb.co/wNStJ54H/image.png" alt="MLTN-MD Banner" width="70%" border="0" />
+  </a>
+</p>
+  <hr style="margin-top: 20px; margin-bottom: 20px;"/>
+>>>>>>> e2595d17a1c4483b2807639f46c27403d4af0b2c
 </div>
 
 <h3 align="center">☠️ 𝐓𝐇𝐄 𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐎𝐄𝐒 𝐍𝐎𝐓 𝐁𝐄𝐆. 𝐈𝐓 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒. ☠️</h3>
@@ -64,6 +77,7 @@
   ⚠️ <i>WhatsApp and Baileys don't always play nice together. If your bot refuses to rise from the dead, here's the ritual:</i> ⚠️
 </p>
 
+<<<<<<< HEAD
 <div align="center">
 
 | Step | Ritual |
@@ -77,3 +91,10 @@
 <br>
 
 <h3 align="center">💀 𝐓𝐇𝐄 𝐆𝐀𝐓𝐄 𝐈𝐒 𝐎𝐏𝐄𝐍. 𝐄𝐍𝐓𝐄𝐑 𝐈𝐅 𝐘𝐎𝐔 𝐃𝐀𝐑𝐄. 💀</h3>
+=======
+<ol>
+  <li>Relink your session ID by changing the session to the app you deployed.</li>
+  <li>If that doesn't work, try updating your WhatsApp.</li>
+  <li>If the issue persists, don't give up! Just keep relinking the session until it works. 🌑⚔️</li>
+</ol>
+>>>>>>> e2595d17a1c4483b2807639f46c27403d4af0b2c
