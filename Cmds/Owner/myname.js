@@ -1,25 +1,25 @@
-const ownerMiddleware = require('../../utility/botUtil/Ownermiddleware');
+const ownerMiddleware = require('../../Middleware/ownerMiddleware');
 
 module.exports = async (context) => {
   await ownerMiddleware(context, async () => {
     const { client, m, text, isOwner } = context;
 
     try {
-      if (!text) {
-        return m.reply("❌ Please provide a name to update the profile.");
+      if (!isOwner) {
+        return m.reply("🛡️ *[ACCESS DENIED]*\n\nFalse Monarch detected. You do not possess the required authority to alter the system core.");
       }
 
-      if (!isOwner) {
-        return m.reply("❌ You do not have permission to perform this action.");
+      if (!text) {
+        return m.reply("🔮 *[SYSTEM NOTICE]*\n\nPlease provide a new designation string to update the profile name.");
       }
 
       const name = text.trim();
 
       await client.updateProfileName(name);
-      m.reply(`✅ Profile name updated to: ${name}`);
+      m.reply(`👑 *[SYSTEM DESIGNATION UPDATED]*\n\nThe profile name has been successfully overwritten.\n\n✨ *New Title:* ${name}\n⚔️ *Authority:* MILITAN`);
     } catch (error) {
       console.error("Error in updating profile name:", error);
-      m.reply("❌ An error occurred while updating profile name. Please try again later.");
+      m.reply("💀 *[CRITICAL ERROR]*\n\nThe Hunter Association firewall or database stream rejected the designation change. Try again later.");
     }
   });
 };

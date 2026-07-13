@@ -4,31 +4,47 @@ module.exports = async (context) => {
     const { client, m, text, botname, sendReply, sendMediaMessage } = context;
 
     try {
-        // Validate input
-        if (!text) return await sendReply(client, m, '📘 Please provide a Facebook URL\nExample: *fb https://fb.watch/...*');
+        // Validate input payload presence
+        if (!text) {
+            return await sendReply(client, m, '🔮 *[SYSTEM NOTICE]*\n\nNo source identifier provided. Please submit a valid Facebook video link.\n\n✨ *Format:* .fb https://fb.watch/...');
+        }
         
-        const fbUrl = text.match(/(https?:\/\/)?(www\.)?(facebook\.com|fb\.watch)\/[^\s]+/i)?.[0];
-        if (!fbUrl) return await sendReply(client, m, '❌ Invalid Facebook URL');
+        // Isolate URL match string via robust regex parsing sub-domains
+        const fbUrl = text.match(/(https?:\/\/)?(www\.|web\.|m\.)?(facebook\.com|fb\.watch)\/[^\s]+/i)?.[0];
+        if (!fbUrl) {
+            return await sendReply(client, m, '❌ *[LINK PARSE ERROR]*\n\nThe target string could not be verified as a valid Facebook core layout link.');
+        }
 
-        // Fetch Facebook video info
+        // Trigger loading visual cue
+        await client.sendMessage(m.chat, { react: { text: '📥', key: m.key } });
+
+        // Fetch Facebook video data stream mapping
         const result = await getFBInfo(fbUrl);
-        if (!result?.hd) throw new Error('No downloadable video found');
+        
+        // Critical Quality Fallback: dynamically checks for HD, drops gracefully to SD if needed
+        const downloadUrl = result?.hd || result?.sd;
+        if (!downloadUrl) {
+            throw new Error('No downloadable HD or SD content available for this media layout.');
+        }
 
-        // Build caption
-        const caption = `📹 *Facebook Video* - ${botname}\n\n` +
-                        `📌 *Title:* ${result.title || 'Untitled'}\n` +
-                        `🔗 *Original URL:* ${result.url}\n\n` +
-                        `_Powered by Facebook Downloader_`;
+        const videoQuality = result.hd ? 'High Definition (HD)' : 'Standard Definition (SD)';
 
-        // Send HD video
+        // Build premium terminal status prompt text layout with your added original URL property
+        const caption = `📹 *[FACEBOOK STREAM EXTRACTED]* 📹\n\n` +
+                        `📌 *Title:* ${result.title || 'Untitled Archive'}\n` +
+                        `⚙️ *Quality:* ${videoQuality}\n` +
+                        `🔗 *Source:* ${result.url || fbUrl}\n\n` +
+                        `👑 *Downloaded Via:* ${botname || 'MILITAN Core'}`;
+
+        // Send compiled media package down to chat conversation instance
         await sendMediaMessage(client, m, {
-            video: { url: result.hd },
+            video: { url: downloadUrl },
             caption: caption,
             gifPlayback: false
         });
 
     } catch (error) {
-        console.error('Facebook Download Error:', error);
-        await sendReply(client, m, `❌ Failed to download Facebook video: ${error.message}`);
+        console.error('Facebook Download Fatal Error:', error);
+        await sendReply(client, m, `💀 *[DOWNLOAD STREAM COLLAPSED]*\n\nThe scraping network layer rejected or timed out while processing this node element:\n\n\`\`\`${error.message}\`\`\``);
     }
 };

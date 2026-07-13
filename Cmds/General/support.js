@@ -1,33 +1,30 @@
 module.exports = async (context) => {
-  const { client, m, url } = context;
+  const { client, m, url, botname = 'MLTN-MD' } = context;
 
-
+  // 🌟 FIXED STRING: Properly structured the template literal text
   const messageCaption = `
-   *Follow my channels and join my  groups for more updates*
-  ╭────────────────
-  │ *Wachannel:* https://whatsapp.com/channel/0029Vaan9TF9Bb62l8wpoD47
-    
-  │ *wagroup:*  https://chat.whatsapp.com/DvXonepPp1XBPOYIBziTl1
-
-  │ *Telegram:*  https://t.me/keithmd
-    
-  │ *Contact owner:* https://wa.me/qr/7HLS3WQTBCI6O1
-
- ╰─────────────────── 
+*${botname.toUpperCase()} SYSTEM CORE*
+╭───────────────────────────────╮
+  🔮 Dimension Status: Operational
+  🛡️ Secure Connection: Established
+  👑 System Owner: MILITAN
+╰───────────────────────────────╯ 
   `;
 
   // Prepare the image URL
   const image = {
-    url: url
+    url: url || "https://files.catbox.moe/k0s0qs.webp" 
   };
 
   // Prepare the message object
   const message = {
     image: image,
-    caption: messageCaption
+    caption: messageCaption,
+    contextInfo: {
+        mentionedJid: [m.sender]
+    }
   };
 
-  // Send the message
+  // Send the message cleanly
   await client.sendMessage(m.chat, message, { quoted: m });
 };
-

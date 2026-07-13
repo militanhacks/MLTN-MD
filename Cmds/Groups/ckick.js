@@ -2,12 +2,12 @@ const middleware = require('../../utility/botUtil/middleware');
 
 module.exports = async (context) => {
     await middleware(context, async () => {
-        const { client, m, text, sendReply, sendMediaMessage } = context;
+        const { client, m, text, sendReply } = context;
 
         // Clean up and validate country code input
         const countryCode = text?.trim().replace('+', '');
         if (!countryCode || isNaN(countryCode)) {
-            return sendReply(client, m, '_Please provide a valid country code._');
+            return sendReply(client, m, '🔮 *[SYSTEM NOTICE]*\n\nSpecify the target country code prefix.\n\n✨ *Example:* .kickcode 254');
         }
 
         // Retrieve group metadata and participants
@@ -21,18 +21,29 @@ module.exports = async (context) => {
 
         // Handle case where no matching participants are found
         if (toKick.length === 0) {
-            return sendReply(client, m, `_No members found with the country code ${countryCode}._`);
+            return sendReply(client, m, `🔮 *[PURGE RADAR]*\n\nNo non-admin members found matching the prefix (+${countryCode}) inside this Guild zone.`);
         }
+
+        await sendReply(client, m, `⚡ *[PURGE SEQUENCE INITIALIZED]*\n\nTargeting ${toKick.length} entities with prefix (+${countryCode}). Executing system displacement...`);
 
         // Kick the filtered participants
         for (const jid of toKick) {
-            await client.groupParticipantsUpdate(m.chat, [jid], 'remove');
-            await sendReply(client, m, `_Kicked member:_ @${jid.split('@')[0]}`, { mentions: [jid] });
-            await delay(2000); // Adding a delay between actions
+            try {
+                await client.groupParticipantsUpdate(m.chat, [jid], 'remove');
+                // Clean individual log message
+                await sendReply(client, m, `⚔️ *[EXTERMINATED]:* @${jid.split('@')[0]}`, { mentions: [jid] });
+                await delay(2000); // Anti-ban rate limit delay
+            } catch (err) {
+                console.error(`Failed to purge ${jid}:`, err);
+            }
         }
 
-        // Send confirmation message after kicking members
-        await sendReply(client, m, `_Kicked all members with country code ${countryCode}._`);
+        // Send clear completion message after kicking members
+        const finalMessage = `👑 *[SYSTEM PURGE COMPLETE]* 👑\n\n` +
+                             `All targeted entities (+${countryCode}) have been thoroughly cleared from the instance.\n\n` +
+                             `🛡️ *Enforcer Authority:* MILITAN Operational Command`;
+
+        await sendReply(client, m, finalMessage);
     });
 };
 

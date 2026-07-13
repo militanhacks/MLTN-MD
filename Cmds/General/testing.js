@@ -5,7 +5,7 @@ module.exports = async (context) => {
   let p = `
 
   
- button ✅ Testing...
+ ⚡ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐎𝐍𝐋𝐈𝐍𝐄 — 𝐁𝐮𝐭𝐭𝐨𝐧 𝐓𝐞𝐬𝐭 ✅
   `;
 
   // Define the image URL
@@ -67,16 +67,11 @@ module.exports = async (context) => {
   const buttonMessage = {
     image: { url: imagePath },
     caption: p,
-    footer: "© MLTN\n",
+    footer: "☠️ MLTN-MD — The shadows are watching\n",
     headerType: 1,
     buttons: buttons,
     viewOnce: true,
     contextInfo: {
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363266249040649@newsletter',
-        newsletterName: 'MLTN Support',
-      },
       externalAdReply: {
         title: "MLTN Testing",
         body: "MLTN",

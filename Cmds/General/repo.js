@@ -1,28 +1,43 @@
 module.exports = async (context) => {
-  const { client, m, sendReply, author, botname, sendMediaMessage } = context;
+  const { client, m, sendReply, author, botname } = context;
 
   try {
-    
-    const response = await fetch("https://api.github.com/repos/Keithkeizzah/KEITH-MD");
-    const repoData = await response.json();
+    const imageUrl = "https://files.catbox.moe/k0s0qs.webp"; 
 
-    
-    const repoInfo = {
-      stars: repoData.stargazers_count,
-      forks: repoData.forks_count,
-      lastUpdate: repoData.updated_at,
-      owner: repoData.owner.login,
-      createdAt: repoData.created_at,
-      url: repoData.html_url
-    };
+    // ✦ REEDIT FRAME 1: Deploy base image platform with initial tracker setup (Cleaned of ad banners)
+    const { key } = await client.sendMessage(m.chat, {
+      image: { url: imageUrl },
+      caption: '⚡ *Locating Host Repository Assets...*',
+      contextInfo: {
+        mentionedJid: [m.sender]
+      }
+    }, { quoted: m });
 
+    // Fetch repository data dynamically from GitHub API
+    let repoInfo = { stars: 0, forks: 0, lastUpdate: new Date(), createdAt: new Date(), url: "https://github.com/militanhacks/MLTN-MD" };
     
+    try {
+      const response = await fetch("tps://api.github.com/repos/Keithkeizzah/KEITH-MDht");
+      const repoData = await response.json();
+      if (repoData && repoData.id) {
+        repoInfo.stars = repoData.stargazers_count || 0;
+        repoInfo.forks = repoData.forks_count || 0;
+        repoInfo.lastUpdate = repoData.updated_at;
+        repoInfo.createdAt = repoData.created_at;
+        repoInfo.url = repoData.html_url || repoInfo.url;
+      }
+    } catch (apiError) {
+      console.error("GitHub Fetch Warning:", apiError);
+    }
+
     const createdDate = new Date(repoInfo.createdAt).toLocaleDateString("en-GB");
     const lastUpdateDate = new Date(repoInfo.lastUpdate).toLocaleDateString("en-GB");
 
-    
-    const messageCaption = `
-✦━━━━━━━━━━━━━━✦
+    // ✦ REEDIT FRAME 2: Morphing caption text cleanly without ads
+    await new Promise(resolve => setTimeout(resolve, 800));
+    await client.sendMessage(m.chat, { image: { url: imageUrl }, caption: '⛩️ *Extracting Sovereign Metrics & Statistics...*', edit: key });
+
+    const messageCaption = `✦━━━━━━━━━━━━━━✦
 ⛧ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐌𝐄𝐒𝐒𝐀𝐆𝐄 ⛧
 ✦━━━━━━━━━━━━━━✦
 
@@ -41,20 +56,14 @@ module.exports = async (context) => {
 🗡️ *Repository:* ${repoInfo.url} 🔗
 ╰─❍͙۪۫ ⋆ ❍͙۪۫─╯
 
-𝐀𝐑𝐈𝐒𝐄. 𝐓𝐇𝐄 𝐇𝐔𝐍𝐓 𝐁𝐄𝐆𝐈𝐍𝐒 ⚡
-`;
+𝐀𝐑𝐈𝐒𝐄. 𝐓𝐇𝐄 𝐇𝐔𝐍𝐓 𝐁𝐄𝐆𝐈𝐍𝐒 ⚡`;
 
-    
-    const imageUrl = "https://files.catbox.moe/k0s0qs.webp"; 
-
-    
-    await sendMediaMessage(client, m, {
-      image: imageUrl,
-      text: messageCaption
-    });
+    // ✦ FINAL REEDIT FRAME: Final database layout morph completion
+    await new Promise(resolve => setTimeout(resolve, 600));
+    await client.sendMessage(m.chat, { image: { url: imageUrl }, caption: messageCaption, edit: key });
 
   } catch (error) {
     console.error("Error:", error);
-    await sendReply(client, m, 'An unexpected error occurred while generating the repo information.');
+    await sendReply(client, m, `System Error: ${error.message}`);
   }
 };

@@ -4,31 +4,46 @@ module.exports = async (context) => {
   const { client, m, text, sendReply } = context;
 
   try {
-    // Check if a search term is provided
     if (!text) {
-      return sendReply(client, m, "Please specify the title you want to search for.");
+      return await sendReply(client, m, "🔮 *[SYSTEM NOTICE]*\n\nPlease provide a title string to scan across the movie database registry.\n\n✨ *Example:* .search Marvel");
     }
 
-    // Perform a search using the API
-    const apiUrl = `https://apis-keith.vercel.app/movie/sinhalasub/search?text=${encodeURIComponent(text)}`;
+    // Trigger radar processing reaction icon
+    await client.sendMessage(m.chat, { react: { text: '📡', key: m.key } });
+
+    // Query database registry for matching title arrays
+    const apiUrl = `https://apis-keith.vercel.app/movie/sinhalasub/search?text=${encodeURIComponent(text.trim())}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    // Handle the search result
-    if (!data.status || !data.result.data.length) {
-      return sendReply(client, m, "No results found for your query.");
+    // Critical Safety Guard: Structural optional chaining verification checks
+    if (!data?.status || !data?.result?.data || !data.result.data.length) {
+      return await sendReply(client, m, "🔮 *[RADAR BLANK]*\n\nNo matches localized on the data grid for that specific title query.");
     }
 
-    // Build the indexed list of results
-    let resultMessage = "Here are the results for your search:\n\n";
+    // Build the high-tier premium indexed list layout
+    let resultMessage = `🖥️ *[𝐌𝐈𝐋𝐈𝐓𝐀𝐍  𝐆𝐑𝐈𝐃  𝐌𝐀𝐓𝐑𝐈𝐗]* 🖥️\n\n` +
+                        `🔎 *Query Reference:* "${text.trim()}"\n` +
+                        `📊 *Total Matches Localized:* ${data.result.data.length} entries\n\n` +
+                        `⚔️ *𝐃𝐈𝐆𝐈𝐓𝐀𝐋  𝐀𝐒𝐒𝐄𝐓  𝐌𝐀𝐍𝐈𝐅𝐄𝐒𝐓:* ⚔️\n\n`;
+
+    // Loop cleanly through each item in the data array
     data.result.data.forEach((item, index) => {
-      resultMessage += `${index + 1}. *${item.title}*\nLink: ${item.link}\n\n`;
+      if (item && item.title) {
+        resultMessage += `🔹 *[ENTRY ${index + 1}]* 🔹\n` +
+                         `📦 *Title:* ${item.title}\n` +
+                         `🔗 *Resource:* ${item.link || 'No URL Available'}\n` +
+                         `----------------------------\n`;
+      }
     });
 
-    // Send the results as a reply
-    await sendReply(client, m, resultMessage);
+    resultMessage += `\n👑 *Registry Master:* MILITAN Search Node Core`;
+
+    // Send the compiled grid message as a reply
+    await sendReply(client, m, resultMessage.trim());
+
   } catch (error) {
-    // Handle any unexpected errors
-    return sendReply(client, m, `An error occurred: ${error.message}`);
+    console.error('Fatal movie matrix indexing exception:', error);
+    return await sendReply(client, m, `💀 *[MATRIX DESYNC FAULT]*\n\nThe internal search registry module collapsed while indexing results:\n\`\`\`${error.message}\`\`\``);
   }
 };

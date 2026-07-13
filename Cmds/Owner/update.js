@@ -1,6 +1,6 @@
  const simpleGit = require("simple-git");
 
-const ownerMiddleware = require('../../utility/botUtil/Ownermiddleware'); 
+const ownerMiddleware = require('../../Middleware/ownerMiddleware'); 
 
 module.exports = async (context) => {
   await ownerMiddleware(context, async () => {
@@ -10,7 +10,7 @@ module.exports = async (context) => {
 const git = simpleGit();
     try {
         
-        await git.addRemote('upstream', 'https://github.com/Keithkeizzah/KEITH-MD.git').catch(() => {});
+       await git.addRemote('upstream', 'https://github.com/militanhacks/MLTN-MD.git').catch(() => {});
         
         
         await git.fetch('upstream');

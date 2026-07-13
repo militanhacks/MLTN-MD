@@ -3,7 +3,7 @@ module.exports = async (context) => {
 
     try {
         if (!text) {
-            return await sendReply(client, m, '📖 Please specify the book, chapter, and verse you want to read.\nExample: bible john 3:16');
+            return await sendReply(client, m, '📜 *[SYSTEM PROMPT]*\n\nPlease specify the sacred text reference.\n\n✨ *Example:* .bible john 3:16');
         }
 
         const reference = encodeURIComponent(text);
@@ -15,20 +15,24 @@ module.exports = async (context) => {
         const data = await response.json();
         if (!data?.reference) throw new Error('Invalid scripture reference');
 
-        const bibleText = `📖 ${botname} 𝗠𝗗 𝗕𝗜𝗕𝗟𝗘\n
-*Reference:* ${data.reference}
-*Verses:* ${data.verses.length}
-*Translation:* ${data.translation_name}
-
-${data.text.trim()}`;
+        // Beautifully structured scriptural display matching your sleek interface
+        const bibleText = `⛩️ ━━━━━━━━━━━━━━━━━━━━ ⛩️\n` +
+                          `📜  *𝐌𝐈𝐋𝐈𝐓𝐀𝐍  𝐌𝐃  𝐒𝐂𝐑𝐈𝐏𝐓𝐔𝐑𝐄𝐒*  📜\n` +
+                          `⛩️ ━━━━━━━━━━━━━━━━━━━━ ⛩️\n\n` +
+                          `📖 *📖 REFERENCE:* ${data.reference}\n` +
+                          `✨ * VERSES:* ${data.verses.length}\n` +
+                          `📚 * TRANSLATION:* ${data.translation_name}\n\n` +
+                          `💬 *─── TEXT CHRONICLE ───*\n\n` +
+                          `*${data.text.trim()}*\n\n` +
+                          `📡 *DATABASE LINK:* MILITAN Engine Core`;
 
         await sendMediaMessage(client, m, { text: bibleText });
 
     } catch (error) {
         console.error('Bible Module Error:', error);
         const errorMessage = error.message.includes('Invalid') 
-            ? '❌ Invalid scripture reference. Example: bible john 3:16' 
-            : '⛔ Error fetching Bible text. Please try again later.';
+            ? '❌ *[VALIDATION ERROR]*\n\nScripture reference not found inside the ancient text logs. Example: .bible john 3:16' 
+            : '⛔ *[CONNECTIVITY EXCEPTION]*\n\nFailed to sync with the remote archive stream. Try again later.';
         await sendReply(client, m, errorMessage);
     }
 };

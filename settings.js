@@ -2,7 +2,7 @@
 
 const session = process.env.SESSION || '';
 
-const prefix = process.env.PREFIX || '';
+const prefix = process.env.PREFIX || '.';
 const mycode = process.env.CODE || "254";
 const author = process.env.OWNER_NAME || 'MILITAN';
 const packname = process.env.PACKNAME || 'MLTN';

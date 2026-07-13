@@ -1,42 +1,34 @@
-
-const speed = require('performance-now'); // Keeps your system speed tracking intact
+const speed = require('performance-now');
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// ⏳ The Advanced System Awakening Animation
-async function loading(m, client) {
-    // Step-by-step awakening text commands
-    const loadingSymbols = [
-        "🌑 SYSTEM STATUS: DORMANT...",
-        "⚡ AWAKENING MLTN MD...",
-        "👁️ IDENTITY VERIFIED: REWRITING THE RULES...",
-        "⚔️ DISMANTLING TERMINAL BLINDSPOTS...",
-        "👑 OVERRIDE COMPLETE. ASCENDING NOW."
-    ];
-    
-    // The very first cool introduction text that pops up
-    let { key } = await client.sendMessage(m.chat, { text: `*⚠️ WARNING: Core system breach initiated...*` });
-
-    // Cycle through the dark awakening animation strings
-    for (let i = 0; i < loadingSymbols.length; i++) {
-        await client.sendMessage(m.chat, { text: `*${loadingSymbols[i]}*`, edit: key });
-        await delay(1000); // Wait 1 second between each stage so users can actually read it
-    }
-
-    // Completely deletes the loading sequence from the chat right before the final results drop!
-    await client.sendMessage(m.chat, { delete: key });
-}
-
 module.exports = async (context) => {
-    const { client, m, botname, author } = context;
+    const { client, m, botname } = context;
 
     try {
-        // Trigger the awakening sequence first
-        await loading(m, client);
+        // Step-by-step awakening text commands
+        const loadingSymbols = [
+            "🌑 SYSTEM STATUS: DORMANT...",
+            "⚡ AWAKENING MLTN MD...",
+            "👁️ IDENTITY VERIFIED: REWRITING THE RULES...",
+            "⚔️ DISMANTLING TERMINAL BLINDSPOTS...",
+            "👑 OVERRIDE COMPLETE. ASCENDING NOW."
+        ];
+        
+        // 1. Send the initial visual breach alert placeholder message
+        let { key } = await client.sendMessage(m.chat, { 
+            text: `*⚠️ WARNING: Core system breach initiated...*` 
+        }, { quoted: m });
 
-        // Calculate the execution latency speeds
+        // Cycle through the dark awakening animation strings via text edits
+        for (let i = 0; i < loadingSymbols.length; i++) {
+            await client.sendMessage(m.chat, { text: `*${loadingSymbols[i]}*`, edit: key });
+            await delay(1000); 
+        }
+
+        // 2. Calculate execution latency speeds immediately after the loop
         const timestamp = speed();
         const pingSpeed = speed() - timestamp;
 
@@ -48,9 +40,12 @@ module.exports = async (context) => {
                             `═\n` +
                             `_Survival is winning — everything else is just noise._ 🌑⚔️`;
 
-        // 🚀 Elite Context Card with the large Render Banner
+        // 3. CRITICAL PATCH: Instead of deleting and creating a new message, 
+        // edit the existing animation key directly into the final layout. 
+        // This completely bypasses the ANTIDELETE crash trap!
         await client.sendMessage(m.chat, {
             text: perfMessage,
+            edit: key,
             contextInfo: {
                 mentionedJid: [m.sender],
                 forwardingScore: 999,
@@ -58,17 +53,17 @@ module.exports = async (context) => {
                 externalAdReply: {
                     title: `⚡ ${botname.toUpperCase()} COMMAND SEQUENCE`,
                     body: "Do whatever it takes to rise from the shadows.",
-                    showAdAttribution: true, // Injects the verified system arrow badge
-                    thumbnailUrl: "https://i.imgur.com/XlQIFIF.jpeg", // Pulls your clean visual banner
-                    sourceUrl: "https://session-generator-qyw2.onrender.com", // Your custom live link
+                    showAdAttribution: true, 
+                    thumbnailUrl: "https://imgur.com/undefined.jpeg", 
+                    sourceUrl: "https://session-generator-qyw2.onrender.com", 
                     mediaType: 1,
-                    renderLargerThumbnail: true // Spreads the image across the entire header beautifully
+                    renderLargerThumbnail: true 
                 }
             }
-        }, { quoted: m });
+        });
 
     } catch (error) {
-        console.error("Error sending message:", error);
-        m.reply('An error occurred while executing the core telemetry override.');
+        console.error("Error executing core telemetry override:", error);
+        m.reply('❌ An error occurred while executing the core telemetry override.');
     }
 };

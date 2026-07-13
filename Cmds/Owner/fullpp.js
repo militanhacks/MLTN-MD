@@ -1,4 +1,4 @@
-const ownerMiddleware = require('../../utility/botUtil/Ownermiddleware'); 
+const ownerMiddleware = require('../../Middleware/ownerMiddleware'); 
 const { S_WHATSAPP_NET } = require('@whiskeysockets/baileys');
 
 module.exports = async (context) => {

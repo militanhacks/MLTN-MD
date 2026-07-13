@@ -1,7 +1,6 @@
 module.exports = async (context) => {
-  const { client, m } = context;
+  const { client, m, botname } = context;
 
-  // Sound file URLs
   const audioFiles = [
     'https://files.catbox.moe/hpwsi2.mp3',
     'https://files.catbox.moe/xci982.mp3',
@@ -21,16 +20,10 @@ module.exports = async (context) => {
     'https://files.catbox.moe/tn32z0.m4a'
   ];
 
-  // Randomly pick an audio file
   const vn = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-
-  // Other variables
   const name = m.pushName || client.getName(m.sender);
-  const url = 'https://github.com/Keithkeizzah/KEITH-MD2';
-  const murl = 'https://whatsapp.com/channel/0029Vaan9TF9Bb62l8wpoD47';
-  const img = 'https://i.imgur.com/vTs9acV.jpeg';
+  const img = 'https://imgur.com/V4rQBZR.png';
 
-  // Constructing the contact message
   const con = {
     key: {
       fromMe: false,
@@ -40,33 +33,30 @@ module.exports = async (context) => {
     message: {
       contactMessage: {
         displayName: name,
-        vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;a,;;;\nFN:${name}\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+        vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;a,;;;\nFN:${name}\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Hunter\nEND:VCARD`,
       },
     },
   };
 
-  // Audio file message with external ad reply info
   const doc = {
     audio: {
       url: vn,
     },
     mimetype: 'audio/mpeg',
-    ptt: true,
-    waveform: [100, 0, 100, 0, 100, 0, 100],
-    fileName: 'shizo',
+    ptt: false,
+    fileName: 'system_wake',
     contextInfo: {
       mentionedJid: [m.sender],
       externalAdReply: {
-        title: '𝗜 𝗔𝗠 𝗔𝗟𝗜𝗩𝗘 𝗠𝗢𝗧𝗛𝗘𝗥𝗙𝗨𝗖𝗞𝗘𝗥',
-        body: 'Regards Keithkeizzah',
+        title: '⚠️ [SYSTEM ALERT: MANA PULSE DETECTED]',
+        body: `Hunter ${name} — Status: Active | Brand: MILITAN ⚡`,
         thumbnailUrl: img,
-        sourceUrl: murl,
+        sourceUrl: '',
         mediaType: 1,
         renderLargerThumbnail: true,
       },
     },
   };
 
-  // Send the message
   await client.sendMessage(m.chat, doc, { quoted: con });
 };

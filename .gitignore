@@ -1,0 +1,6 @@
+session/
+.env
+node_modules/
+*.log
+message_data/
+store.json
