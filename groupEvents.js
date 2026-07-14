@@ -7,11 +7,26 @@ const getContextInfo = (m) => {
     };
 };
 
+// Cache groupMetadata per group for 5 minutes to avoid rate-overlimit errors
+// when several join/leave/promote/demote events fire in quick succession.
+const metadataCache = new Map();
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+async function getCachedGroupMetadata(client, groupId) {
+    const cached = metadataCache.get(groupId);
+    if (cached && Date.now() - cached.time < CACHE_TTL_MS) {
+        return cached.data;
+    }
+    const data = await client.groupMetadata(groupId);
+    metadataCache.set(groupId, { data, time: Date.now() });
+    return data;
+}
+
 const Events = async (client, MILITAN) => {
     const Myself = await client.decodeJid(client.user.id);
 
     try {
-        let metadata = await client.groupMetadata(MILITAN.id);
+        let metadata = await getCachedGroupMetadata(client, MILITAN.id);
         let participants = MILITAN.participants;
         let desc = metadata.desc || "No Description";
         let groupMembersCount = metadata.participants.length;
