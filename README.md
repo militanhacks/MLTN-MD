@@ -76,7 +76,7 @@
   ⚠️ <i>WhatsApp and Baileys don't always play nice together. If your bot refuses to rise from the dead, here's the ritual:</i> ⚠️
 </p>
 
-<<<<<<< HEAD
+
 <div align="center">
 
 | Step | Ritual |
@@ -96,4 +96,4 @@
   <li>If that doesn't work, try updating your WhatsApp.</li>
   <li>If the issue persists, don't give up! Just keep relinking the session until it works. 🌑⚔️</li>
 </ol>
->>>>>>> e2595d17a1c4483b2807639f46c27403d4af0b2c
+
