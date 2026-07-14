@@ -1,6 +1,6 @@
 <h1 align="center">⛧ 𝗠𝗟𝗧𝗡-𝗠𝗗 ⛧</h1>
 
-<<<<<<< HEAD
+
 <!-- PICTURE 1: Main banner/logo image goes here -->
 <div align="center">
   <a href="https://i.ibb.co/wNStJ54H/image.png">
@@ -30,8 +30,7 @@
     <img src="https://i.ibb.co/wNStJ54H/image.png" alt="MLTN-MD Banner" width="70%" border="0" />
   </a>
 </p>
-  <hr style="margin-top: 20px; margin-bottom: 20px;"/>
->>>>>>> e2595d17a1c4483b2807639f46c27403d4af0b2c
+ 
 </div>
 
 <h3 align="center">☠️ 𝐓𝐇𝐄 𝐒𝐘𝐒𝐓𝐄𝐌 𝐃𝐎𝐄𝐒 𝐍𝐎𝐓 𝐁𝐄𝐆. 𝐈𝐓 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒. ☠️</h3>
