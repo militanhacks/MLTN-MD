@@ -536,7 +536,10 @@ async function startMLTN() {
     }
   });
 
-  client.ev.on("creds.update", saveCreds);
+  client.ev.on("creds.update", async () => {
+  await saveCreds();
+  await uploadSession();
+});
   client.sendText = (jid, text, quoted = "", options) => client.sendMessage(jid, { text, ...options }, { quoted });
 }
 
