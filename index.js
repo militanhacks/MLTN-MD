@@ -199,6 +199,7 @@ async function handleMessageRevocation(client, revocationMessage) {
 
 let repliedContacts = new Set();
 async function startMLTN() {
+  await downloadSession();
   const { saveCreds, state } = await useMultiFileAuthState("session");
   const client = MLTNConnect({
     logger: pino({ level: "silent" }),
