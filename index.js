@@ -85,9 +85,6 @@ const groupEvents = require("./groupEvents.js");
 const axios = require("axios");
 const googleTTS = require('google-tts-api');
 
-const app = express();
-const port = process.env.PORT || 10000;
-
 app.get('/', (req, res) => {
   res.status(200).send('MLTN-MD is running.');
 });
@@ -95,15 +92,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`✅ Web server listening on port ${port}`);
 });
-
-app.get('/', (req, res) => {
-  res.status(200).send('MLTN-MD is running.');
-});
-
-app.listen(port, () => {
-  console.log(`✅ Web server listening on port ${port}`);
-});
-
 // Anti-delete functionality
 const baseDir = 'message_data';
 if (!fs.existsSync(baseDir)) {
