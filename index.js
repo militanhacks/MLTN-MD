@@ -96,6 +96,14 @@ app.listen(port, () => {
   console.log(`✅ Web server listening on port ${port}`);
 });
 
+app.get('/', (req, res) => {
+  res.status(200).send('MLTN-MD is running.');
+});
+
+app.listen(port, () => {
+  console.log(`✅ Web server listening on port ${port}`);
+});
+
 // Anti-delete functionality
 const baseDir = 'message_data';
 if (!fs.existsSync(baseDir)) {
