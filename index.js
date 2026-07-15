@@ -284,6 +284,42 @@ async function startMLTN() {
             }
 
             // Normal message logging
+           // 👁️ ANTI VIEW-ONCE: intercept and resend privately before it disappears
+            if (antionce === 'true' && mek.message) {
+                const viewOnceMsg = mek.message.viewOnceMessageV2?.message
+                    || mek.message.viewOnceMessageV2Extension?.message
+                    || mek.message.viewOnceMessage?.message;
+
+                if (viewOnceMsg) {
+                    try {
+                        const ownerJid = client.decodeJid(client.user.id);
+                        const senderJid = mek.key.participant || mek.key.remoteJid;
+                        const senderNumber = senderJid.split('@')[0];
+                        const mediaType = viewOnceMsg.imageMessage ? 'image' : viewOnceMsg.videoMessage ? 'video' : null;
+
+                        if (mediaType) {
+                            const stream = await downloadContentFromMessage(viewOnceMsg[`${mediaType}Message`], mediaType);
+                            let buffer = Buffer.from([]);
+                            for await (const chunk of stream) {
+                                buffer = Buffer.concat([buffer, chunk]);
+                            }
+
+                            const caption = viewOnceMsg[`${mediaType}Message`].caption || '';
+                            const notice = `𓆩👁️𓆪 *𝐒𝐇𝐀𝐃𝐎𝐖 𝐄𝐘𝐄 𝐀𝐖𝐀𝐊𝐄𝐍𝐒* 𓆩👁️𓆪\n\n🩸 𝘈 𝘴𝘦𝘤𝘳𝘦𝘵 𝘮𝘦𝘢𝘯𝘵 𝘵𝘰 𝘷𝘢𝘯𝘪𝘴𝘩 𝘸𝘢𝘴 𝘴𝘦𝘦𝘯 𝘣𝘦𝘧𝘰𝘳𝘦 𝘪𝘵 𝘤𝘰𝘶𝘭𝘥 𝘥𝘪𝘴𝘢𝘱𝘱𝘦𝘢𝘳...\n\n━━━━━━━━━━━━━━━━\n📤 *𝐒𝐞𝐧𝐭 𝐁𝐲* : @${senderNumber}\n📍 *𝐂𝐡𝐚𝐭*    : ${mek.key.remoteJid}\n━━━━━━━━━━━━━━━━${caption ? `\n📝 *𝐂𝐚𝐩𝐭𝐢𝐨𝐧:* ${caption}` : ''}`;
+
+                            if (mediaType === 'image') {
+                                await client.sendMessage(ownerJid, { image: buffer, caption: notice, contextInfo: { mentionedJid: [senderJid] } });
+                            } else {
+                                await client.sendMessage(ownerJid, { video: buffer, caption: notice, contextInfo: { mentionedJid: [senderJid] } });
+                            }
+                        }
+                    } catch (err) {
+                        console.log('Anti-view-once error:', err.message);
+                    }
+                }
+            }
+
+            // Normal message logging
             if (mek.message?.conversation || mek.message?.extendedTextMessage?.text) {
                 console.log("📩 TEXT MSG:", mek.key.remoteJid, "| fromMe:", mek.key.fromMe, "| text:", mek.message.conversation || mek.message.extendedTextMessage.text);
             }
