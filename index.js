@@ -55,6 +55,7 @@ const express = require("express");
 const { DateTime } = require("luxon");
 const util = require("util");
 const speed = require("performance-now");
+const { smsg } = require('./lib/smsg');
 const { downloadSession, uploadSession } = require('./lib/mongoSession');
 const fetchLogoUrl = require('./lib/ephoto');
 const {
