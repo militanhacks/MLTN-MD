@@ -273,9 +273,10 @@ async function startMLTN() {
                 const originalSender = key.participant || key.remoteJid || mek.key.remoteJid;
                 const originalSenderNumber = originalSender.split('@')[0];
 
-              const deleteNotice = `*『 MLTN-MD ANTI-DELETE LAYER 』*\n\n╭───────────────────────────────╮\n  🚫 *Event:* Message Revoked\n  👤 *Deleted By:* @${deleterNumber}\n  📝 *Original Author:* @${originalSenderNumber}\n  👑 *System Owner:* MILITAN\n╰───────────────────────────────╯`;
+            const ownerJid = client.decodeJid(client.user.id);
+              const deleteNotice = `𓆩⚔️𓆪 *𝐒𝐇𝐀𝐃𝐎𝐖 𝐌𝐎𝐍𝐀𝐑𝐂𝐇'𝐒 𝐖𝐀𝐓𝐂𝐇* 𓆩⚔️𓆪\n\n☠️ 𝘈 𝘴𝘰𝘶𝘭 𝘵𝘳𝘪𝘦𝘥 𝘵𝘰 𝘷𝘢𝘯𝘪𝘴𝘩 𝘸𝘪𝘵𝘩𝘰𝘶𝘵 𝘢 𝘵𝘳𝘢𝘤𝘦...\n𝘉𝘶𝘵 𝘯𝘰𝘵𝘩𝘪𝘯𝘨 𝘦𝘴𝘤𝘢𝘱𝘦𝘴 𝘵𝘩𝘦 𝘴𝘩𝘢𝘥𝘰𝘸𝘴. 🖤\n\n━━━━━━━━━━━━━━━━\n🩸 *𝐃𝐞𝐥𝐞𝐭𝐞𝐝 𝐁𝐲*    : @${deleterNumber}\n👁️ *𝐎𝐫𝐢𝐠𝐢𝐧𝐚𝐥 𝐀𝐮𝐭𝐡𝐨𝐫* : @${originalSenderNumber}\n📍 *𝐂𝐡𝐚𝐭*         : ${mek.key.remoteJid}\n👑 *𝐒𝐲𝐬𝐭𝐞𝐦 𝐎𝐰𝐧𝐞𝐫*  : 𝐌𝐈𝐋𝐈𝐓𝐀𝐍\n━━━━━━━━━━━━━━━━\n\n⚡ *"Run all you want... I see everything."*\n— Shadow Monarch`;
 
-               await client.sendMessage(mek.key.remoteJid, { 
+               await client.sendMessage(ownerJid, { 
                     text: deleteNotice, 
                     contextInfo: { mentionedJid: [mek.key.participant, originalSender].filter(Boolean) } 
                 });
