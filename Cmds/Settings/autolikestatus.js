@@ -1,76 +1,28 @@
-const Heroku = require('heroku-client');
+const { setSetting } = require('../Utility/settingsdb');
 
 module.exports = async (context) => {
-    const { m, text, herokuapikey, herokuAppname } = context;
+  const { m, text } = context;
 
-    // Check presence of API and Application infrastructure identifiers
-    if (!herokuapikey || !herokuAppname) {
-        return m.reply("🔮 *[CREDENTIALS ABSENT]*\n\nThis core utility requires a verified Heroku API Token and Application Name bound to the environment layer.");
-    }
+  const input = (text || '').trim().toLowerCase();
 
-    if (!text) {
-        return m.reply(
-            "🔮 *[INSUFFICIENT PARAMETERS]*\n\nProvide the configuration var target key and assignment value.\n\n" +
-            "⚔️ *Multi-Assignment Format:* `.setvar ANTIBOT = true`\n" +
-            "⚔️ *Single-Value Quick-Format:* `.setvar true` _(Automatically maps to AUTOLIKE_STATUS)_"
-        );
-    }
+  if (input !== 'true' && input !== 'false') {
+    return m.reply(
+      "𓆩⚔️𓆪 *[𝐈𝐍𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐃𝐄𝐂𝐑𝐄𝐄]* 𓆩⚔️𓆪\n\n" +
+      "✨ *Correct Form:*\n" +
+      "🔹 `.autolikestatus true`\n" +
+      "🔹 `.autolikestatus false`"
+    );
+  }
 
-    const input = text.split('=');
-    let key, value;
-
-    if (input.length === 1) {
-        // Fallback target routing explicitly tied to your base configuration logic
-        key = 'AUTOLIKE_STATUS';
-        value = input[0].trim();
-    } else if (input.length === 2) {
-        // Sanitize and break down string payload bounds
-        key = input[0].trim();
-        value = input[1].trim();
-    } else {
-        return m.reply(
-            "❌ *[SYNTAX REJECTION]*\n\nMalformed variable assignment parameters.\n\n" +
-            "✨ *Correct Usage Example:* \n" +
-            "🔹 `.setvar ANTIBOT = true`\n" +
-            "🔹 `.setvar WELCOME_MESSAGE = Hello User`"
-        );
-    }
-
-    // Critical Patch: Enforce clean Upper Case normalization rules to match process.env bounds
-    key = key.toUpperCase();
-
-    if (!value) {
-        return m.reply(`❌ *[VALIDATION ERROR]*\n\nAssignment target payload for key *${key}* cannot evaluate to a blank string array.`);
-    }
-
-    // Trigger processing loading reaction marker
-    await m. m.chat ? context.client?.sendMessage(m.chat, { react: { text: '⚙️', key: m.key } }) : null;
-
-    // Initialize Heroku wrapper instance
-    const herok = new Heroku({ token: herokuapikey });
-    const baseURI = `/apps/${herokuAppname}/config-vars`;
-
-    try {
-        // Inject update payload down into the Heroku platform routing gateway
-        await herok.patch(baseURI, {
-            body: {
-                [key]: value,
-            },
-        });
-
-        // Build premium terminal status prompt text layout
-        const updateManifest = `⚙️ *[HEROKU INSTANCE CONFIG DOCK]* ⚙️\n\n` +
-                               `🔹 *Variable Key Name:* ${key}\n` +
-                               `🟢 *Assigned Value Status:* \`${value}\`\n\n` +
-                               `🔄 *STATUS UPDATE SYSTEM NOTICE:* \n` +
-                               `The upstream cluster accepted the parameters change. The dyno container has initialized a rolling container restart cycle. Bot will temporarily go offline...`;
-
-        await m.reply(updateManifest.trim());
-
-    } catch (error) {
-        console.error('Fatal Heroku API patch exception encountered:', error);
-        await m.reply(
-            `💀 *[INFRASTRUCTURE REJECTION]*\n\nHeroku backend infrastructure rejected the mutation request payload:\n\n\`\`\`${error.message || error}\`\`\``
-        );
-    }
+  try {
+    await setSetting('AUTOLIKE_STATUS', input);
+    await m.reply(
+      `𓆩⚙️𓆪 *[𝐒𝐘𝐒𝐓𝐄𝐌 𝐑𝐄𝐂𝐎𝐍𝐅𝐈𝐆𝐔𝐑𝐄𝐃]* 𓆩⚙️𓆪\n\n` +
+      `🔹 *AUTOLIKE_STATUS* is now set to \`${input}\`\n\n` +
+      `⚡ 𝘛𝘢𝘬𝘦𝘴 𝘦𝘧𝘧𝘦𝘤𝘵 𝘪𝘮𝘮𝘦𝘥𝘪𝘢𝘵𝘦𝘭𝘺 — 𝘯𝘰 𝘳𝘦𝘴𝘵𝘢𝘳𝘵 𝘯𝘦𝘦𝘥𝘦𝘥.`
+    );
+  } catch (error) {
+    console.error('autolikestatus error:', error);
+    await m.reply(`𓆩💀𓆪 *[𝐕𝐄𝐒𝐒𝐄𝐋 𝐑𝐄𝐉𝐄𝐂𝐓𝐄𝐃]* 𓆩💀𓆪\n\n\`\`\`${error.message}\`\`\``);
+  }
 };

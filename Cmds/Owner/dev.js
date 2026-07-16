@@ -6,9 +6,8 @@ module.exports = async (context) => {
 
     // Define developer contacts with names
     const devContacts = [
-      { name: 'Keith', number: '254748387615' },
-      { name: 'Alpha', number: '254796299159' },
-      { name: 'Ghost', number: '254110190196' }
+      { name: 'MILITAN', number: '254713421283' },
+      { name: 'MILITAN_2', number: '254748373318' },
     ];
 
     // Inform about the developer contacts

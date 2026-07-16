@@ -1,51 +1,28 @@
-const Heroku = require('heroku-client');
+const { setSetting } = require('../Utility/settingsdb');
 
 module.exports = async (context) => {
-  const { m, text, herokuapikey, herokuAppname } = context;
+  const { m, text } = context;
 
- 
-  const input = text.split('=');
+  const input = (text || '').trim().toLowerCase();
 
-  let key, value;
-
-  if (input.length === 1) {
-   
-    key = 'AUTOVIEW_STATUS';
-    value = input[0].trim(); 
-  } else if (input.length === 2) {
-    
-    [key, value] = input.map((str) => str.trim()); 
-  } else {
-  
+  if (input !== 'true' && input !== 'false') {
     return m.reply(
-      'Incorrect Usage:\nProvide the key and value correctly.\nExample:\n.setvar ANTIBOT=TRUE\nOr to set AUTOREAD directly:\n.setvar true'
+      "𓆩⚔️𓆪 *[𝐈𝐍𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐃𝐄𝐂𝐑𝐄𝐄]* 𓆩⚔️𓆪\n\n" +
+      "✨ *Correct Form:*\n" +
+      "🔹 `.autoviewstatus true`\n" +
+      "🔹 `.autoviewstatus false`"
     );
   }
 
-  const herok = new Heroku({
-    token: herokuapikey,
-  });
-
-  const baseURI = `/apps/${herokuAppname}/config-vars`;
-
   try {
-    
-    await herok.patch(baseURI, {
-      body: {
-        [key]: value,
-      },
-    });
-
- 
+    await setSetting('AUTOVIEW_STATUS', input);
     await m.reply(
-      `✅ The variable ${key} = ${value} has been set successfully.\nBot is restarting...`
+      `𓆩⚙️𓆪 *[𝐒𝐘𝐒𝐓𝐄𝐌 𝐑𝐄𝐂𝐎𝐍𝐅𝐈𝐆𝐔𝐑𝐄𝐃]* 𓆩⚙️𓆪\n\n` +
+      `🔹 *AUTOVIEW_STATUS* is now set to \`${input}\`\n\n` +
+      `⚡ 𝘛𝘢𝘬𝘦𝘴 𝘦𝘧𝘧𝘦𝘤𝘵 𝘪𝘮𝘮𝘦𝘥𝘪𝘢𝘵𝘦𝘭𝘺 — 𝘯𝘰 𝘳𝘦𝘴𝘵𝘢𝘳𝘵 𝘯𝘦𝘦𝘥𝘦𝘥.`
     );
   } catch (error) {
-    
-    console.error('Error setting config variable:', error);
-    await m.reply(
-      '❌ There was an error setting the variable. Please try again later.\n' +
-        error
-    );
+    console.error('autoviewstatus error:', error);
+    await m.reply(`𓆩💀𓆪 *[𝐕𝐄𝐒𝐒𝐄𝐋 𝐑𝐄𝐉𝐄𝐂𝐓𝐄𝐃]* 𓆩💀𓆪\n\n\`\`\`${error.message}\`\`\``);
   }
 };

@@ -1,7 +1,6 @@
 module.exports = async (context) => {
   const { client, m } = context;
 
-  // List of video URLs
   const videoUrls = [
     "https://files.catbox.moe/8gdmwt.mp4",
     "https://files.catbox.moe/rvsa8e.mp4",
@@ -17,45 +16,41 @@ module.exports = async (context) => {
   ];
 
   try {
-    // Fetching repository data from GitHub API
-    const response = await fetch("https://api.github.com/repos/keithkeizzah/KEITH-MD");
+    const response = await fetch("https://api.github.com/repos/militanhacks/MLTN-MD");
     const repoData = await response.json();
 
     if (repoData) {
-      // Multiplying forks and stars by 9
       const { stargazers_count, forks_count } = repoData;
-      const modifiedStars = stargazers_count * 9;
-      const modifiedForks = forks_count * 9;
 
-      // Constructing the message content
       const messageText = `
-        *A Total of ${modifiedForks} People are using KEITH-MD.*
-        
-        *${modifiedStars} People have starred it as a sign of Loving it.*
-        
-        *KEEP USING KEITH-MD*
-        
-        *Regards, keithkeizzah*
+𓆩👑𓆪 *𝐒𝐇𝐀𝐃𝐎𝐖 𝐀𝐑𝐌𝐘 𝐂𝐄𝐍𝐒𝐔𝐒* 𓆩👑𓆪
+
+━━━━━━━━━━━━━━━━
+🩸 𝐓𝐨𝐭𝐚𝐥 𝐒𝐡𝐚𝐝𝐨𝐰𝐬 𝐄𝐧𝐥𝐢𝐬𝐭𝐞𝐝 : ${forks_count}
+⭐ 𝐒𝐨𝐮𝐥𝐬 𝐖𝐡𝐨 𝐁𝐨𝐰𝐞𝐝 : ${stargazers_count}
+━━━━━━━━━━━━━━━━
+
+⚡ 𝘛𝘩𝘦 𝘢𝘳𝘮𝘺 𝘨𝘳𝘰𝘸𝘴 𝘸𝘪𝘵𝘩 𝘦𝘷𝘦𝘳𝘺 𝘴𝘰𝘶𝘭 𝘵𝘩𝘢𝘵 𝘫𝘰𝘪𝘯𝘴 𝘵𝘩𝘦 𝘴𝘩𝘢𝘥𝘰𝘸𝘴.
+
+👑 *𝐒𝐭𝐚𝐲 𝐥𝐨𝐲𝐚𝐥 𝐭𝐨 𝐌𝐋𝐓𝐍-𝐌𝐃*
+
+⛧ 𝑹𝒆𝒈𝒂𝒓𝒅𝒔, 𝒕𝒉𝒆 𝑺𝒉𝒂𝒅𝒐𝒘 𝑴𝒐𝒏𝒂𝒓𝒄𝒉 ⛧
       `;
 
-      // Randomly selecting a video URL from the list
       const randomVideoUrl = videoUrls[Math.floor(Math.random() * videoUrls.length)];
 
-      // Preparing the video content to send
       const messageToSend = {
         video: {
           url: randomVideoUrl
         },
         caption: messageText,
         externalAdReply: {
-          title: "𝐊𝐄𝐈𝐓𝐇-𝐌𝐃",
-          body: "Regards Keithkeizzah",
-          sourceUrl: "https://whatsapp.com/channel/0029Vaan9TF9Bb62l8wpoD47",
+          title: "𓆩⚔️𓆪 𝐌𝐋𝐓𝐍-𝐌𝐃 𓆩⚔️𓆪",
+          body: "Powered by the Shadow Monarch",
           mediaType: 1,
         }
       };
 
-      // Sending the message
       await client.sendMessage(m.chat, messageToSend);
     } else {
       console.error("Could not fetch data from GitHub API.");

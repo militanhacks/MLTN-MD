@@ -1,35 +1,31 @@
-const Heroku = require('heroku-client');
-
+const { setSetting } = require('../Utility/settingsdb');
 module.exports = async (context) => {
-  const { m, text, herokuapikey, herokuAppname } = context;
+  const { m, text } = context;
 
   const input = text.split('=');
-  if (input.length !== 2) {
-    return m.reply('Incorrect Usage:\nProvide the key and value correctly.\nExample: setvar ANTIBOT=TRUE');
+
+  let key, value;
+
+  if (input.length === 1) {
+    key = 'AUTOVIEW_STATUS';
+    value = input[0].trim();
+  } else if (input.length === 2) {
+    [key, value] = input.map((str) => str.trim());
+  } else {
+    return m.reply(
+      '⛔ *Incorrect Usage, mortal.*\nExample:\n.setvar ANTIBOT=TRUE\nOr to set AUTOVIEW_STATUS directly:\n.setvar true'
+    );
   }
 
-  const [key, value] = input;
-
- 
-  const herok = new Heroku({
-    token: herokuapikey,
-  });
-
-  const baseURI = `/apps/${herokuAppname}/config-vars`;
-
   try {
-    
-    await herok.patch(baseURI, {
-      body: {
-        [key]: value,
-      },
-    });
-
-    
-    await m.reply(`✅ The variable ${key} = ${value} has been set successfully.\nBot is restarting...`);
+    await setSetting(key, value);
+    await m.reply(
+      `⛓️ *Decree carved into the Vault:* ${key} = ${value}\n🌑 The change takes hold immediately — no restart required.`
+    );
   } catch (error) {
-    
-    console.error('Error setting config variable:', error);
-    await m.reply('❌ There was an error setting the variable. Please try again later.\n' + error );
+    console.error('Error setting variable:', error);
+    await m.reply(
+      '💀 *The Vault rejected this decree.* Try again later.\n' + error.message
+    );
   }
 };

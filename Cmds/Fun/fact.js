@@ -9,20 +9,20 @@ module.exports = async (context) => {
 
         const { fact } = await response.json();
         const factMessage = `
-┏━━━ *KEITH-FACT* ━━━◆                     
-┃
-┃   *◇* ${fact} 
-┃
-┃   *◇* Regards *KEITH MD*
-┃      
- ╭───────────────◆
- │ *_Powered by keithkeizzah._*
- ╰───────────────◆
+𓆩📜𓆪 *𝐅𝐎𝐑𝐁𝐈𝐃𝐃𝐄𝐍 𝐊𝐍𝐎𝐖𝐋𝐄𝐃𝐆𝐄* 𓆩📜𓆪
+
+━━━━━━━━━━━━━━━━
+${fact}
+━━━━━━━━━━━━━━━━
+
+👁️ 𝘌𝘷𝘦𝘳𝘺 𝘴𝘦𝘤𝘳𝘦𝘵 𝘦𝘷𝘦𝘯𝘵𝘶𝘢𝘭𝘭𝘺 𝘴𝘶𝘳𝘧𝘢𝘤𝘦𝘴 𝘧𝘳𝘰𝘮 𝘵𝘩𝘦 𝘴𝘩𝘢𝘥𝘰𝘸𝘴.
+
+⛧ 𝑹𝒆𝒗𝒆𝒂𝒍𝒆𝒅 𝒃𝒚 𝑴𝑳𝑻𝑵-𝑴𝑫 ⛧
         `;
 
         await client.sendMessage(m.chat, { text: factMessage }, { quoted: m });
     } catch (error) {
         console.error('Error fetching data:', error);
-        await client.sendMessage(m.chat, { text: 'An error occurred while fetching the fact.' }, { quoted: m });
+        await client.sendMessage(m.chat, { text: '⛔ The archive stayed silent. Try again shortly.' }, { quoted: m });
     }
 };

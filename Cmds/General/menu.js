@@ -105,14 +105,20 @@ module.exports = async (context) => {
             menuText += `┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n`;
         }
 
-        // 🌟 FIXED CLEAN VERSION: Single, non-duplicate clean dispatch setup
-        await client.sendMessage(m.chat, { 
-            image: { url: "https://files.catbox.moe/k0s0qs.webp" }, 
-            caption: menuText,
+       // 🌟 System Awakening loading animation, then edit into the full menu
+        const loadingText = `⚡ *[ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐀𝐖𝐀𝐊𝐄𝐍𝐈𝐍𝐆 ]* ⚡\n\n🌑 𝘛𝘩𝘦 𝘴𝘩𝘢𝘥𝘰𝘸𝘴 𝘴𝘵𝘪𝘳...\n👁️ 𝘔𝘢𝘱𝘱𝘪𝘯𝘨 𝘵𝘩𝘦 𝘴𝘺𝘴𝘵𝘦𝘮'𝘴 𝘢𝘳𝘴𝘦𝘯𝘢𝘭...`;
+
+        const { key } = await client.sendMessage(m.chat, { text: loadingText }, { quoted: m });
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        await client.sendMessage(m.chat, {
+            text: menuText,
+            edit: key,
             contextInfo: {
                 mentionedJid: [m.sender]
             }
-        }, { quoted: m });
+        });
 
     } catch (error) {
         console.error("Error Inside menu.js:", error);

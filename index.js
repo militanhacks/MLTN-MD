@@ -3,6 +3,9 @@
 const fs = require('fs');
 const zlib = require('zlib');
 const { session } = require("./settings");
+const { startVerseScheduler } = require('./Cmds/Utility/verseScheduler');
+const { initDB, getSetting } = require('./Cmds/Utility/settingsdb');
+initDB();
 
 async function authenticationn() {
   try {
@@ -57,6 +60,7 @@ const util = require("util");
 const speed = require("performance-now");
 const { smsg } = require('./lib/smsg');
 const { downloadSession, uploadSession } = require('./lib/mongoSession');
+const botState = require('./lib/botState');
 const fetchLogoUrl = require('./lib/ephoto');
 const {
   smsgsmsg, formatp, tanggal, formatDate, getTime, sleep, clockString,
@@ -102,7 +106,8 @@ if (!fs.existsSync(baseDir)) {
 }
 
 function loadChatData(remoteJid, messageId) {
-  const chatFilePath = path.join(baseDir, remoteJid, `${messageId}.json`);
+  const safeJid = remoteJid.replace(/[:*?"<>|]/g, '_');
+  const chatFilePath = path.join(baseDir, safeJid, `${messageId}.json`);
   try {
     const data = fs.readFileSync(chatFilePath, 'utf8');
     return JSON.parse(data) || [];
@@ -112,7 +117,8 @@ function loadChatData(remoteJid, messageId) {
 }
 
 function saveChatData(remoteJid, messageId, chatData) {
-  const chatDir = path.join(baseDir, remoteJid);
+  const safeJid = remoteJid.replace(/[:*?"<>|]/g, '_');
+  const chatDir = path.join(baseDir, safeJid);
   if (!fs.existsSync(chatDir)) {
     fs.mkdirSync(chatDir, { recursive: true });
   }
@@ -171,37 +177,37 @@ async function handleMessageRevocation(client, revocationMessage) {
                            `🎯 *Original Author:* ${sentByName}\n\n` +
                            `🩸 *Another target tried to erase their tracks...*\n`;
 
-    if (originalMessage.message?.conversation) {
-      const messageText = originalMessage.message.conversation;
-      notificationText += `*Message Text:* \`\`\`${messageText}\`\`\``;
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.imageMessage) {
-      const buffer = await client.downloadMediaMessage(originalMessage);
-      await client.sendMessage(delfrom, { image: buffer });
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.videoMessage) {
-      const buffer = await client.downloadMediaMessage(originalMessage);
-      await client.sendMessage(delfrom, { video: buffer });
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.stickerMessage) {
-      const buffer = await client.downloadMediaMessage(originalMessage);
-      await client.sendMessage(delfrom, { sticker: buffer });
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.documentMessage) {
-      const fileName = originalMessage.message.documentMessage.fileName || 'file';
-      const buffer = await client.downloadMediaMessage(originalMessage);
-      await client.sendMessage(delfrom, { document: buffer, fileName: fileName });
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.audioMessage) {
-      const buffer = await client.downloadMediaMessage(originalMessage);
-      const isPTT = originalMessage.message.audioMessage.ptt === true;
-      await client.sendMessage(delfrom, { audio: buffer, ptt: isPTT, mimetype: 'audio/mpeg', fileName: `${messageId}.mp3` });
-      await client.sendMessage(delfrom, { text: notificationText });
-    } else if (originalMessage.message?.extendedTextMessage) {
-      const messageText = originalMessage.message.extendedTextMessage.text;
-      notificationText += `   *Message Text:* \`\`\`${messageText}\`\`\``;
-      await client.sendMessage(delfrom, { text: notificationText });
-    }
+   if (originalMessage.message?.conversation) {
+  const messageText = originalMessage.message.conversation;
+  notificationText += `*Message Text:* \`\`\`${messageText}\`\`\``;
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.imageMessage) {
+  const buffer = await client.downloadMediaMessage(originalMessage);
+  await client.sendMessage(delfrom, { image: buffer });
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.videoMessage) {
+  const buffer = await client.downloadMediaMessage(originalMessage);
+  await client.sendMessage(delfrom, { video: buffer });
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.stickerMessage) {
+  const buffer = await client.downloadMediaMessage(originalMessage);
+  await client.sendMessage(delfrom, { sticker: buffer });
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.documentMessage) {
+  const fileName = originalMessage.message.documentMessage.fileName || 'file';
+  const buffer = await client.downloadMediaMessage(originalMessage);
+  await client.sendMessage(delfrom, { document: buffer, fileName: fileName });
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.audioMessage) {
+  const buffer = await client.downloadMediaMessage(originalMessage);
+  const isPTT = originalMessage.message.audioMessage.ptt === true;
+  await client.sendMessage(delfrom, { audio: buffer, ptt: isPTT, mimetype: 'audio/mpeg', fileName: `${messageId}.mp3` });
+  await client.sendMessage(delfrom, { text: notificationText });
+} else if (originalMessage.message?.extendedTextMessage) {
+  const messageText = originalMessage.message.extendedTextMessage.text;
+  notificationText += `   *Message Text:* \`\`\`${messageText}\`\`\``;
+  await client.sendMessage(delfrom, { text: notificationText });
+}
   }
 }
 
@@ -280,17 +286,28 @@ async function startMLTN() {
                     text: deleteNotice, 
                     contextInfo: { mentionedJid: [mek.key.participant, originalSender].filter(Boolean) } 
                 });
-                return;
             }
 
             // Normal message logging
            // 👁️ ANTI VIEW-ONCE: intercept and resend privately before it disappears
+            // 👁️ ANTI VIEW-ONCE: intercept and resend privately before it disappears
             if (antionce === 'true' && mek.message) {
-                const viewOnceMsg = mek.message.viewOnceMessageV2?.message
+                let viewOnceMsg = mek.message.viewOnceMessageV2?.message
                     || mek.message.viewOnceMessageV2Extension?.message
                     || mek.message.viewOnceMessage?.message;
 
+                // Newer clients sometimes send view-once media as a flat flag
+                // directly on imageMessage/videoMessage instead of wrapping it.
+                if (!viewOnceMsg) {
+                    if (mek.message.imageMessage?.viewOnce) {
+                        viewOnceMsg = { imageMessage: mek.message.imageMessage };
+                    } else if (mek.message.videoMessage?.viewOnce) {
+                        viewOnceMsg = { videoMessage: mek.message.videoMessage };
+                    }
+                }
+
                 if (viewOnceMsg) {
+                    console.log('👁️ View-once message detected, intercepting...');
                     try {
                         const ownerJid = client.decodeJid(client.user.id);
                         const senderJid = mek.key.participant || mek.key.remoteJid;
@@ -487,7 +504,7 @@ async function startMLTN() {
         }
       } 
 
-      if (cmd && mode === "private" && !itsMe && m.sender !== daddy) return;
+      if (cmd && botState.mode === "private" && !itsMe && m.sender !== daddy) return;
       
       try {
         const Blocked = await client.fetchBlocklist().catch(() => []);
@@ -578,6 +595,7 @@ async function startMLTN() {
       const message = `✦━━━━━━━━━━━━━━✦\n⛯ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐀𝐖𝐀𝐊𝐄𝐍𝐈𝐍𝐆 ⛯\n✦━━━━━━━━━━━━━━✦\n\n${getGreeting()}\n💀 ${botname} 𝐡𝐚𝐬 𝐚𝐫𝐢𝐬𝐞𝐧 𝐟𝐫𝐨𝐦 𝐭𝐡𝐞 𝐬𝐡𝐚𝐝𝐨𝐰𝐬 🌑\n🔮 𝐒𝐮𝐦𝐦𝐨𝐧𝐞𝐝 𝐛𝐲 𝐭𝐡𝐞 𝐒𝐡𝐚𝐝𝐨𝐰 𝐌𝐨𝐧𝐚𝐫𝐜𝐡 — ${author} 👑\n\n┏━━━━━━━━━━━━━━━┓\n ⚡ 𝐒𝐓𝐀𝐓𝐔𝐒 𝐖𝐈𝐍𝐃𝐎𝐖 ⚡\n┗━━━━━━━━━━━━━━━┛\n\n╭─❍͙۪۫ ⋆ ❍͙۪۫─╮\n👑 𝐌𝐎𝐍𝐀𝐑𝐂𝐇   : ${author}\n🌑 𝐑𝐀𝐍𝐊      : ${mode}\n🗡️ 𝐂𝐎𝐌𝐌𝐀𝐍𝐃   : [ ${prefix} ]\n⚔️ 𝐀𝐑𝐒𝐄𝐍𝐀𝐋   : ${totalCommands}\n⏰ 𝐓𝐈𝐌𝐄 𝐆𝐀𝐓𝐄 : ${DateTime.now().setZone("Africa/Nairobi").toLocaleString(DateTime.TIME_SIMPLE)}\n📜 𝐋𝐈𝐁𝐑𝐀𝐑𝐘   : Baileys\n╰─❍͙۪۫ ⋆ ❍͙۪۫─╯\n\n⚡ 𝐀 𝐑 𝐈 𝐒 𝐄 . 𝐓 𝐇 𝐄  𝐇 𝐔 𝐍 𝐓  𝐁 𝐄 𝐆 𝐈 𝐍 𝐒 ⚡`;
       await client.sendMessage(client.user.id, { text: message });
       console.log(`\nConnected successfully!\n`);
+      startVerseScheduler(client);
     }
   });
 

@@ -3,16 +3,15 @@ const Heroku = require('heroku-client');
 module.exports = async (context) => {
     const { m, text, herokuapikey, herokuAppname } = context;
 
-    // Check presence of API and Application infrastructure identifiers
     if (!herokuapikey || !herokuAppname) {
-        return m.reply("🔮 *[CREDENTIALS ABSENT]*\n\nThis core utility requires a verified Heroku API Token and Application Name bound to the environment layer.");
+        return m.reply("𓆩🔮𓆪 *[𝐓𝐇𝐄 𝐂𝐎𝐑𝐄 𝐈𝐒 𝐔𝐍𝐁𝐎𝐔𝐍𝐃]* 𓆩🔮𓆪\n\n☠️ 𝘛𝘩𝘪𝘴 𝘳𝘪𝘵𝘶𝘢𝘭 𝘳𝘦𝘲𝘶𝘪𝘳𝘦𝘴 𝘢 𝘣𝘰𝘶𝘯𝘥 𝘥𝘦𝘱𝘭𝘰𝘺𝘮𝘦𝘯𝘵 𝘷𝘦𝘴𝘴𝘦𝘭 𝘢𝘯𝘥 𝘢 𝘴𝘦𝘢𝘭𝘦𝘥 𝘒𝘦𝘺.\n𝘕𝘰 𝘷𝘦𝘴𝘴𝘦𝘭 𝘥𝘦𝘵𝘦𝘤𝘵𝘦𝘥.");
     }
 
     if (!text) {
         return m.reply(
-            "🔮 *[INSUFFICIENT PARAMETERS]*\n\nProvide the configuration var target key and assignment value.\n\n" +
-            "⚔️ *Multi-Assignment Format:* `.setvar PREFIX = .`\n" +
-            "⚔️ *Single-Value Quick-Format:* `.setvar Keith Md` _(Automatically maps to BOTNAME)_"
+            "𓆩🔮𓆪 *[𝐈𝐍𝐒𝐔𝐅𝐅𝐈𝐂𝐈𝐄𝐍𝐓 𝐃𝐄𝐂𝐑𝐄𝐄]* 𓆩🔮𓆪\n\n𝐒𝐭𝐚𝐭𝐞 𝐭𝐡𝐞 𝐭𝐚𝐫𝐠𝐞𝐭 𝐤𝐞𝐲 𝐚𝐧𝐝 𝐭𝐡𝐞 𝐯𝐚𝐥𝐮𝐞 𝐭𝐨 𝐛𝐢𝐧𝐝.\n\n" +
+            "⚔️ *Multi-Assignment:* `.setvar PREFIX = .`\n" +
+            "⚔️ *Quick-Format:* `.setvar Shadow Sovereign` _(maps to BOTNAME)_"
         );
     }
 
@@ -20,30 +19,26 @@ module.exports = async (context) => {
     let key, value;
 
     if (input.length === 1) {
-        // Fallback target routing explicitly tied to this file's logic
         key = 'BOTNAME';
         value = input[0].trim();
     } else if (input.length === 2) {
-        // Sanitize and break down string payload bounds
         key = input[0].trim();
         value = input[1].trim();
     } else {
         return m.reply(
-            "❌ *[SYNTAX REJECTION]*\n\nMalformed variable assignment parameters.\n\n" +
-            "✨ *Correct Usage Example:* \n" +
+            "𓆩❌𓆪 *[𝐌𝐀𝐋𝐅𝐎𝐑𝐌𝐄𝐃 𝐃𝐄𝐂𝐑𝐄𝐄]* 𓆩❌𓆪\n\n" +
+            "✨ *Correct Form:* \n" +
             "🔹 `.setvar ANTILINK = true`\n" +
-            "🔹 `.setvar BOTNAME = MILITAN Core`"
+            "🔹 `.setvar BOTNAME = MLTN-MD`"
         );
     }
 
-    // Critical Patch: Enforce clean Upper Case normalization rules to match process.env bounds
     key = key.toUpperCase();
 
     if (!value) {
-        return m.reply(`❌ *[VALIDATION ERROR]*\n\nAssignment target payload for key *${key}* cannot evaluate to a blank string array.`);
+        return m.reply(`𓆩❌𓆪 *[𝐄𝐌𝐏𝐓𝐘 𝐎𝐅𝐅𝐄𝐑𝐈𝐍𝐆]* 𓆩❌𓆪\n\nThe value bound to *${key}* cannot be nothing.`);
     }
 
-    // Trigger processing loading reaction marker
     try {
         if (context.client && m.chat) {
             await context.client.sendMessage(m.chat, { react: { text: '⚙️', key: m.key } });
@@ -52,31 +47,27 @@ module.exports = async (context) => {
         console.error("Failed to send reaction:", e.message);
     }
 
-    // Initialize Heroku wrapper instance
     const herok = new Heroku({ token: herokuapikey });
     const baseURI = `/apps/${herokuAppname}/config-vars`;
 
     try {
-        // Inject update payload down into the Heroku platform routing gateway
         await herok.patch(baseURI, {
             body: {
                 [key]: value,
             },
         });
 
-        // Build premium terminal status prompt text layout
-        const updateManifest = `⚙️ *[HEROKU INSTANCE CONFIG DOCK]* ⚙️\n\n` +
-                               `🔹 *Variable Key Name:* ${key}\n` +
-                               `🟢 *Assigned Value Status:* \`${value}\`\n\n` +
-                               `🔄 *STATUS UPDATE SYSTEM NOTICE:* \n` +
-                               `The upstream cluster accepted the parameters change. The dyno container has initialized a rolling container restart cycle. Bot will temporarily go offline...`;
+        const updateManifest = `𓆩⚙️𓆪 *[𝐒𝐘𝐒𝐓𝐄𝐌 𝐑𝐄𝐂𝐎𝐍𝐅𝐈𝐆𝐔𝐑𝐄𝐃]* 𓆩⚙️𓆪\n\n` +
+                               `🔹 *Key:* ${key}\n` +
+                               `🟢 *Value:* \`${value}\`\n\n` +
+                               `🔄 𝘛𝘩𝘦 𝘳𝘦𝘢𝘭𝘮 𝘴𝘩𝘪𝘧𝘵𝘴. 𝘛𝘩𝘦 𝘷𝘦𝘴𝘴𝘦𝘭 𝘸𝘪𝘭𝘭 𝘣𝘳𝘪𝘦𝘧𝘭𝘺 𝘨𝘰 𝘴𝘪𝘭𝘦𝘯𝘵 𝘸𝘩𝘪𝘭𝘦 𝘪𝘵 𝘳𝘦𝘢𝘸𝘢𝘬𝘦𝘯𝘴...`;
 
         await m.reply(updateManifest.trim());
 
     } catch (error) {
         console.error('Fatal Heroku API patch exception encountered:', error);
         await m.reply(
-            `💀 *[INFRASTRUCTURE REJECTION]*\n\nHeroku backend infrastructure rejected the mutation request payload:\n\n\`\`\`${error.message || error}\`\`\``
+            `𓆩💀𓆪 *[𝐕𝐄𝐒𝐒𝐄𝐋 𝐑𝐄𝐉𝐄𝐂𝐓𝐄𝐃]* 𓆩💀𓆪\n\n\`\`\`${error.message || error}\`\`\``
         );
     }
 };

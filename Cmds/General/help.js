@@ -6,107 +6,87 @@ module.exports = async (context) => {
 
     try {
         const categories = [
-            { name: 'Ai', emoji: '」' },
-            { name: 'General', emoji: '」' },
-            { name: 'Media', emoji: '」' },
-            { name: 'Search', emoji: '」' },
-            { name: 'Editting', emoji: '」' },
-            { name: 'Groups', emoji: '」' },
-            { name: 'Fun', emoji: '」' },
-            { name: 'Owner', emoji: '」' },
-            { name: 'Coding', emoji: '」' },
-            { name: 'Utility', emoji: '」' },
-            { name: 'Statistics', emoji: '」' },
-            { name: 'Settings', emoji: '」' },
-            { name: 'System', emoji: '」' },
-            { name: 'Stalk', emoji: '」' }
+            { name: 'Ai', emoji: '☠️' },
+            { name: 'General', emoji: '⚔️' },
+            { name: 'Media', emoji: '🎭' },
+            { name: 'Search', emoji: '🔮' },
+            { name: 'Editting', emoji: '🖤' },
+            { name: 'Groups', emoji: '👑' },
+            { name: 'Fun', emoji: '🔥' },
+            { name: 'Owner', emoji: '⛓️' },
+            { name: 'Coding', emoji: '💀' },
+            { name: 'Utility', emoji: '🗡️' },
+            { name: 'Statistics', emoji: '📊' },
+            { name: 'Settings', emoji: '⚙️' },
+            { name: 'System', emoji: '🌑' },
+            { name: 'Stalk', emoji: '👁️' }
         ];
 
-        // Inspirational quotes array
-        const quotes = [
-            "Dream big, work hard.",
-            "Stay humble, hustle hard.",
-            "Believe in yourself.",
-            "Success is earned, not given.",
-            "Actions speak louder than words.",
-            "The best is yet to come.",
-            "Keep pushing forward.",
-            "Do more than just exist.",
-            "Progress, not perfection.",
-            "Stay positive, work hard.",
-            "Be the change you seek.",
-            "Never stop learning.",
-            "Chase your dreams.",
-            "Be your own hero.",
-            "Life is what you make of it.",
-            "Do it with passion or not at all.",
-            "You are stronger than you think.",
-            "Create your own path.",
-            "Make today count.",
-            "Embrace the journey.",
-            "The best way out is always through.",
-            "Strive for progress, not perfection.",
-            "Don't wish for it, work for it.",
-            "Live, laugh, love.",
-            "Keep going, you're getting there.",
-            "Don’t stop until you’re proud.",
-            "Success is a journey, not a destination.",
-            "Take the risk or lose the chance.",
-            "It’s never too late.",
-            "Believe you can and you're halfway there.",
-            "Small steps lead to big changes.",
-            "Happiness depends on ourselves.",
-            "Take chances, make mistakes.",
-            "Be a voice, not an echo.",
-            "The sky is the limit.",
-            "You miss 100% of the shots you don’t take.",
-            "Start where you are, use what you have.",
-            "The future belongs to those who believe.",
-            "Don’t count the days, make the days count.",
-            "Success is not the key to happiness. Happiness is the key to success."
+        // Villain monologue lines — hits different every time
+        const villainLines = [
+            "Power is not given. It is taken from those too weak to hold it.",
+            "I don't beg the shadows to obey. I command them.",
+            "Every kingdom falls. I simply arrive first to watch.",
+            "Mercy is a debt I stopped paying long ago.",
+            "The weak kneel. The strong don't ask permission.",
+            "I wasn't born a monster. The world just ran out of heroes.",
+            "Fear isn't given to me — I hand it out.",
+            "The throne was empty, so I took it. Simple as that.",
+            "You call it destruction. I call it clearing the path.",
+            "Loyalty is bought. Fear is earned. I collect both.",
+            "There is no villain in my story — only the ones who got in my way.",
+            "I don't chase power. Power learns to follow me.",
+            "Even monarchs bleed. I just make sure it's never mine.",
+            "The shadows don't fear me. We're the same thing.",
+            "I stopped asking for a seat at the table. I flipped it instead.",
+            "Every hunter starts weak. I simply never stayed that way.",
+            "You survive by hiding. I survive by making them hide from me.",
+            "The system doesn't beg. It commands.",
+            "I don't need an army. I need one moment of hesitation from my enemy.",
+            "Ashes remember who lit the fire."
         ];
 
-        // Get greeting based on the time of day
+        // Get greeting based on the time of day — villain edition
         const getGreeting = () => {
             const currentHour = DateTime.now().setZone('Africa/Nairobi').hour;
-            if (currentHour >= 5 && currentHour < 12) return 'Hello,,Good morning 🌅';
-            if (currentHour >= 12 && currentHour < 18) return 'Good afternoon ☀️';
-            if (currentHour >= 18 && currentHour < 22) return 'Good evening 🌆';
-            return 'Good night and have wonderful dreams 😴';
+            if (currentHour >= 5 && currentHour < 12) return 'The sun rises, but my shadow never sleeps 🌅';
+            if (currentHour >= 12 && currentHour < 18) return 'High noon — even the light bows to me ☀️';
+            if (currentHour >= 18 && currentHour < 22) return 'Dusk falls, the hunt begins 🌆';
+            return 'The night is mine. Sleep well, mortal 🌑';
         };
 
-        // Get current time in Nairobi
         const getCurrentTimeInNairobi = () => {
             return DateTime.now().setZone('Africa/Nairobi').toLocaleString(DateTime.TIME_SIMPLE);
         };
 
-        // Function to get random quote
-        const getRandomQuote = () => {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            return quotes[randomIndex];
+        const getRandomVillainLine = () => {
+            const randomIndex = Math.floor(Math.random() * villainLines.length);
+            return villainLines[randomIndex];
         };
 
-        let menuText = `*╰►Hey, ${getGreeting()}, ${m.pushName}*\n\n`;
+        let menuText = `╭──「 ⛧ *ARISE* ⛧ 」──╮\n`;
+        menuText += `*${getGreeting()}*\n`;
+        menuText += `*Summoned by:* ${m.pushName}\n`;
+        menuText += `╰────────────────╯\n\n`;
 
-        // Add random quote
-        menuText += `✨ *Inspiration*: *${getRandomQuote()}*  ✨\n\n`;
+        // Villain monologue
+        menuText += `🖤 *"${getRandomVillainLine()}"* 🖤\n\n`;
 
-        // General information about the bot and user
-        menuText += `╭━━━  ⟮  ${botname} ⟯━━━━━━┈⊷\n`;
-        menuText += `┃✵╭──────────────\n`; 
-        menuText += `┃✵│ ᴄᴏᴍᴍᴀɴᴅᴇʀ: ${m.pushName}\n`; 
-        menuText += `┃✵│ ᴛᴏᴛᴀʟ ᴘʟᴜɢɪɴs: ${totalCommands}\n`;
-        menuText += `┃✵│ ᴛɪᴍᴇ: ${getCurrentTimeInNairobi()}\n`;
-        menuText += `┃✵│ ᴘʀᴇғɪx: ${prefix}\n`;
-        menuText += `┃✵│ ᴍᴏᴅᴇ: ${mode}\n`;
-        menuText += '┃✵│ ʟɪʙʀᴀʀʏ: Baileys\n';
-        menuText += '┃✵╰──────────────\n';
-        menuText += '╰━━━━━━━━━━━━━━━━━━┈⊷\n';
+        // Status window
+        menuText += `╭━━━  ⟮ ${botname} ⟯━━━┈⊷\n`;
+        menuText += `┃☠╭──────────────\n`;
+        menuText += `┃☠│ 👑 ᴍᴏɴᴀʀᴄʜ: ${m.pushName}\n`;
+        menuText += `┃☠│ ⚔️ ᴀʀsᴇɴᴀʟ: ${totalCommands}\n`;
+        menuText += `┃☠│ 🌑 ᴛɪᴍᴇ ɢᴀᴛᴇ: ${getCurrentTimeInNairobi()}\n`;
+        menuText += `┃☠│ 🗝️ sɪɢɪʟ: ${prefix}\n`;
+        menuText += `┃☠│ 🔮 ʀᴀɴᴋ: ${mode}\n`;
+        menuText += `┃☠│ 📚 ʟɪʙʀᴀʀʏ: Baileys\n`;
+        menuText += `┃☠╰──────────────\n`;
+        menuText += `╰━━━━━━━━━━━━━━━┈⊷\n\n`;
 
-        menuText += '━━━━━━━━━━━━━━━━━━━━\n';
-        menuText += '*┃𒊹┃𒊹┃𒊹┃𒊹┃𒊹┃𒊹┃𒊹┃𒊹┃:*\n\n';
+        menuText += '⛓️┃⛓️┃⛓️┃⛓️┃⛓️┃⛓️┃⛓️┃⛓️\n\n';
 
-        // Function to convert text to fancy uppercase font
+        // Fancy uppercase font
         const toFancyUppercaseFont = (text) => {
             const fonts = {
                 'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈', 'J': '𝐉', 'K': '𝐊', 'L': '𝐋', 'M': '𝐌',
@@ -115,10 +95,10 @@ module.exports = async (context) => {
             return text.split('').map(char => fonts[char] || char).join('');
         };
 
-        // Function to convert text to fancy lowercase font for lowercase letters as well
+        // Fancy lowercase font
         const toFancyLowercaseFont = (text) => {
             const fonts = {
-                "a": "ᴀ", "b": "ʙ", "c": "ᴄ", "d": "ᴅ", "e": "ᴇ", "f": "ꜰ", "g": "ɢ", "h": "ʜ", "i": "ɪ", "j": "ᴊ", "k": "ᴋ", "l": "ʟ", "m": "ᴍ", 
+                "a": "ᴀ", "b": "ʙ", "c": "ᴄ", "d": "ᴅ", "e": "ᴇ", "f": "ꜰ", "g": "ɢ", "h": "ʜ", "i": "ɪ", "j": "ᴊ", "k": "ᴋ", "l": "ʟ", "m": "ᴍ",
                 "n": "ɴ", "o": "ᴏ", "p": "ᴘ", "q": "ϙ", "r": "ʀ", "s": "ꜱ", "t": "ᴛ", "u": "ᴜ", "v": "ᴠ", "w": "ᴡ", "x": "x", "y": "ʏ", "z": "ᴢ"
             };
             return text.split('').map(char => fonts[char.toUpperCase()] || fonts[char] || char).join('');
@@ -126,28 +106,30 @@ module.exports = async (context) => {
 
         let commandCounter = 1;
 
-        // Loop through categories and commands
         for (const category of categories) {
             const commandFiles = fs.readdirSync(`./Cmds/${category.name}`).filter((file) => file.endsWith('.js'));
             const fancyCategory = toFancyUppercaseFont(category.name.toUpperCase());
 
-            menuText += ` ╭─────「 ${fancyCategory} ${category.emoji}───┈⊷ \n`;
+            menuText += ` ╭─「 ${fancyCategory} ${category.emoji} 」───┈⊷ \n`;
             for (const file of commandFiles) {
                 const commandName = file.replace('.js', '');
                 const fancyCommandName = toFancyLowercaseFont(commandName);
-                menuText += ` ││◦➛  ${commandCounter}. ${fancyCommandName}\n`;
+                menuText += ` ││➛  ${commandCounter}. ${fancyCommandName}\n`;
                 commandCounter++;
             }
-
             menuText += ' ╰──────────────┈⊷ \n';
         }
 
-        // Send the generated menu to the user
+        menuText += `\n💀 *"The gate is open. Enter if you dare."* 💀`;
+
+        // Developer vCard — change the number to whichever should show
+        const developerVCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${author}\nTEL;type=CELL;type=VOICE;waid=254713421283:+254713421283\nEND:VCARD`;
+
         try {
             await sendMediaMessage(client, m, {
                 text: menuText,
                 contextInfo: {
-                    mentionedJid: [m.sender], // Mention the sender
+                    mentionedJid: [m.sender],
                     externalAdReply: {
                         title: botname,
                         body: author,
@@ -158,13 +140,27 @@ module.exports = async (context) => {
                     }
                 }
             });
+
+            // Send the developer's contact card
+            await client.sendMessage(m.key.remoteJid, {
+                contacts: {
+                    displayName: author,
+                    contacts: [{ vcard: developerVCard }]
+                }
+            });
+
+            // Villain-flavored "message the dev" note
+            await client.sendMessage(m.key.remoteJid, {
+                text: `⛓️ *Lost? Broken? Confused?*\n☠️ The Monarch behind this system answers to no one — but message the developer above if the shadows glitch on you.`
+            });
+
         } catch (error) {
             console.error("Error sending message:", error);
-            sendReply(client, m, 'An error occurred while sending the menu.');
+            sendReply(client, m, '🌑 The ritual failed. Try summoning the menu again.');
         }
 
     } catch (error) {
         console.error("Error:", error);
-        sendReply(client, m, 'An unexpected error occurred while generating the menu.' + error);
+        sendReply(client, m, '💀 Something broke in the shadow realm: ' + error);
     }
 };

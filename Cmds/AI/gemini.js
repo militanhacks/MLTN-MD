@@ -1,52 +1,34 @@
-const fetch = require("node-fetch");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 module.exports = async (context) => {
-  const { client, m, text, sendReply, sendMediaMessage } = context;
+  const { client, m, text, sendReply } = context;
 
-  const apis = [
-    `https://vapis.my.id/api/gemini?q=${encodeURIComponent(text)}`,
-    `https://api.siputzx.my.id/api/ai/gemini-pro?content=${encodeURIComponent(text)}`,
-    `https://api.ryzendesu.vip/api/ai/gemini?text=${encodeURIComponent(text)}`,
-    `https://api.dreaded.site/api/gemini2?text=${encodeURIComponent(text)}`,
-    `https://api.giftedtech.my.id/api/ai/geminiai?apikey=gifted&q=${encodeURIComponent(text)}`,
-    `https://api.giftedtech.my.id/api/ai/geminiaipro?apikey=gifted&q=${encodeURIComponent(text)}`
-  ];
+  if (!text) {
+    return sendReply(client, m, "𓆩⚔️𓆪 *𝐒𝐇𝐀𝐃𝐎𝐖 𝐌𝐎𝐍𝐀𝐑𝐂𝐇 𝐒𝐏𝐄𝐀𝐊𝐒* 𓆩⚔️𓆪\n\n☠️ 𝘠𝘰𝘶 𝘴𝘵𝘢𝘯𝘥 𝘣𝘦𝘧𝘰𝘳𝘦 𝘮𝘦 𝘸𝘪𝘵𝘩 𝘯𝘰𝘵𝘩𝘪𝘯𝘨 𝘵𝘰 𝘢𝘴𝘬...\n𝘌𝘷𝘦𝘯 𝘢 𝘴𝘩𝘢𝘥𝘰𝘸 𝘯𝘦𝘦𝘥𝘴 𝘢 𝘲𝘶𝘦𝘴𝘵𝘪𝘰𝘯 𝘵𝘰 𝘢𝘯𝘴𝘸𝘦𝘳. 🖤\n\n𝘚𝘱𝘦𝘢𝘬, 𝘰𝘳 𝘣𝘦 𝘴𝘪𝘭𝘦𝘯𝘵.");
+  }
 
   try {
-    if (!text) {
-      return sendReply(client, m, "🔮 *[SYSTEM NOTICE]*\n\nInput query missing. State your question to the System interface.");
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return sendReply(client, m, "𓆩💀𓆪 *𝐓𝐇𝐄 𝐂𝐎𝐑𝐄 𝐇𝐀𝐒 𝐆𝐎𝐍𝐄 𝐒𝐈𝐋𝐄𝐍𝐓* 𓆩💀𓆪\n\n⚡ 𝘔𝘺 𝘱𝘰𝘸𝘦𝘳 𝘴𝘰𝘶𝘳𝘤𝘦 𝘩𝘢𝘴 𝘯𝘰𝘵 𝘣𝘦𝘦𝘯 𝘴𝘶𝘮𝘮𝘰𝘯𝘦𝘥.\n𝘕𝘰 𝘒𝘦𝘺, 𝘯𝘰 𝘴𝘰𝘶𝘭, 𝘯𝘰 𝘢𝘯𝘴𝘸𝘦𝘳.\n\n👑 𝘙𝘦𝘵𝘶𝘳𝘯 𝘸𝘩𝘦𝘯 𝘵𝘩𝘦 𝘳𝘪𝘵𝘶𝘢𝘭 𝘪𝘴 𝘤𝘰𝘮𝘱𝘭𝘦𝘵𝘦.");
     }
 
-    // Display a quick stylized loading cue
-    // m.reply("⚡ *Connecting to the Great Archive core...*");
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    for (const api of apis) {
-      try {
-        const data = await fetch(api);
-        const msgg = await data.json();
+    const result = await model.generateContent(text);
+    const answer = result.response.text();
 
-        // Checking if the API response is successful
-        if (msgg.message || msgg.data || msgg.answer || msgg.result) {
-          const rawAnswer = msgg.message || msgg.data || msgg.answer || msgg.result;
-          
-          // Elevating the response with a sleek, premium interface layout
-          const stylizedResponse = `👁️‍🗨️ *[𝐒𝐘𝐒𝐓𝐄𝐌  𝐈𝐍𝐓𝐄𝐑𝐅𝐀𝐂𝐄  𝐋𝐎𝐆]*\n` +
-                                   `👑 *AUTHORITY:* MILITAN Core Engine\n` +
-                                   `🌐 *DECRYPT STATUS:* Successful\n\n` +
-                                   `${rawAnswer}`;
-                                   
-          await sendReply(client, m, stylizedResponse);
-          return;
-        }
-      } catch (e) {
-        // Continue to the next API link if one fails or times out
-        continue;
-      }
-    }
+    const stylizedResponse = `𓆩👁️𓆪 *𝐒𝐇𝐀𝐃𝐎𝐖 𝐌𝐎𝐍𝐀𝐑𝐂𝐇'𝐒 𝐃𝐄𝐂𝐑𝐄𝐄* 𓆩👁️𓆪\n\n` +
+      `━━━━━━━━━━━━━━━━\n` +
+      `👑 *𝐀𝐮𝐭𝐡𝐨𝐫𝐢𝐭𝐲* : MILITAN Core Engine\n` +
+      `🩸 *𝐒𝐭𝐚𝐭𝐮𝐬*    : Vision Granted\n` +
+      `━━━━━━━━━━━━━━━━\n\n` +
+      `${answer}\n\n` +
+      `⚡ *"Knowledge bends to those who command the shadows."*`;
 
-    // If all APIs in the array fall through
-    sendReply(client, m, "💀 *[CRITICAL DISCONNECT]*\n\nAll remote calculation archives are currently inaccessible. Your mana connection is unstable.");
+    await sendReply(client, m, stylizedResponse);
   } catch (e) {
-    sendReply(client, m, '⛔ *[INTERFACE ERROR]*\n\nAn unexpected anomaly broke the terminal stream:\n' + e);
+    sendReply(client, m, "𓆩⛔𓆪 *𝐀 𝐑𝐈𝐅𝐓 𝐈𝐍 𝐓𝐇𝐄 𝐕𝐎𝐈𝐃* 𓆩⛔𓆪\n\n💢 𝘚𝘰𝘮𝘦𝘵𝘩𝘪𝘯𝘨 𝘵𝘰𝘳𝘦 𝘵𝘩𝘳𝘰𝘶𝘨𝘩 𝘵𝘩𝘦 𝘴𝘵𝘳𝘦𝘢𝘮 𝘣𝘦𝘵𝘸𝘦𝘦𝘯 𝘸𝘰𝘳𝘭𝘥𝘴...\n\n" + e.message + "\n\n👁️ 𝘌𝘷𝘦𝘯 𝘵𝘩𝘦 𝘴𝘵𝘳𝘰𝘯𝘨𝘦𝘴𝘵 𝘴𝘺𝘴𝘵𝘦𝘮𝘴 𝘧𝘢𝘭𝘵𝘦𝘳.");
   }
 };

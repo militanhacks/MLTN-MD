@@ -1,43 +1,36 @@
 module.exports = async (context) => {
   try {
     const { m } = context;
-    const mek = m; // The message object for quoting
+    const mek = m;
 
-    // Define the steps of the prank
     const steps = [
-      "```Injecting Malware```",
-    "``` █ 10%```",
-    " ```█ █ 20%```",
-    " ```█ █ █ 30%```",
-    "``` █ █ █ █ 40%```",
-    "``` █ █ █ █ █ 50%```",
-    "``` █ █ █ █ █ █ 60%```",
-    "``` █ █ █ █ █ █ █ 70%```",
-    " ```█ █ █ █ █ █ █ █ 80%```",
-    " ```█ █ █ █ █ █ █ █ █ 90%```",
-    " ```█ █ █ █ █ █ █ █ █ █ 100%```",
-    "```System hijacking on process..```\n```Connecting to Server error to find 404```",
-    "```Device successfully connected...\nReceiving data...```",
-    "```Data hijacked from device 100% completed\nKilling all evidence, killing all malwares...```",
-    "```HACKING COMPLETED```",
-    "```SENDING LOG DOCUMENTS...```",
-    "```SUCCESSFULLY SENT DATA AND Connection disconnected```",
-    "```BACKLOGS CLEARED```",
-    "```POWERED BY KEITH MD```",
-    "```By keithkeizzah```"
+      "```[ SHADOW BREACH PROTOCOL INITIATED ]```",
+      "```🌑 Scanning target defenses...```",
+      "```█░░░░░░░░░░░░░░░░░░░ 5%  | Bypassing firewall```",
+      "```███░░░░░░░░░░░░░░░░ 15% | Cracking encryption layer 1```",
+      "```██████░░░░░░░░░░░░░ 30% | Cracking encryption layer 2```",
+      "```█████████░░░░░░░░░░ 45% | Injecting shadow payload```",
+      "```████████████░░░░░░░ 60% | Root access acquired```",
+      "```███████████████░░░░ 75% | Extracting target data```",
+      "```█████████████████░░ 88% | Deploying shadow soldiers```",
+      "```████████████████████ 100% | Breach complete```",
+      "```🩸 SYSTEM COMPROMISED\\nAll defenses have fallen silent.```",
+      "```📡 Rerouting extracted data through encrypted shadow tunnel...```",
+      "```🗝️ Master keys copied. Access logs wiped. No trace remains.```",
+      "```⚔️ HACK COMPLETE — Target now belongs to the shadows.```",
+      "```👑 Executed under the authority of the Shadow Monarch```",
+      "```⛧ Powered by MLTN-MD ⛧```"
     ];
 
-    // Loop through all the steps and send them
     for (const line of steps) {
       await context.client.sendMessage(m.chat, { text: line }, { quoted: mek });
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Delay for effect
+      await new Promise(resolve => setTimeout(resolve, 1200));
     }
 
   } catch (error) {
-    console.error('Error during prank:', error);
-    // Send a more detailed error message
+    console.error('Error during hack simulation:', error);
     context.client.sendMessage(m.chat, {
-      text: `❌ *Error!* Something went wrong. Reason: ${error.message}. Please try again later.`
+      text: `⛔ *[BREACH FAILED]*\n\n💢 The shadow tunnel collapsed mid-transfer.\nReason: ${error.message}`
     });
   }
 };
