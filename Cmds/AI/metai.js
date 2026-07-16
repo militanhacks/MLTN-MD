@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const GROQ_API_KEY = "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";
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 module.exports = async (context) => {
   const { client, m, text, sendReply } = context;
