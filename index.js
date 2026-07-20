@@ -95,6 +95,8 @@ const port = process.env.PORT || 10000;
 app.get('/', (req, res) => {
   res.status(200).send('MLTN-MD is running.');
 });
+app.use("/", require("./routes/pair"));
+app.use("/", require("./routes/qr"));
 
 app.listen(port, () => {
   console.log(`✅ Web server listening on port ${port}`);
