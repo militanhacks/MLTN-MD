@@ -55,7 +55,7 @@
   <b>🔮 𝐒𝐔𝐌𝐌𝐎𝐍 𝐘𝐎𝐔𝐑 𝐒𝐄𝐒𝐒𝐈𝐎𝐍</b><br>
   <sub>No session, no power. Link yours below.</sub>
   <br><br>
-  <a href="https://mltn-md-session.onrender.com">
+  <a href="https://mltn-md-session-351h.onrender.com">
     <img src="https://img.shields.io/badge/GET%20SESSION%20CODE-black?style=for-the-badge&logo=whatsapp&logoColor=25D366" alt="Pair session code" />
   </a>
 </td>
