@@ -26,7 +26,7 @@ router.get("/pair", async (req, res) => {
     sock.ev.on("creds.update", saveCreds);
 
     if (!sock.authState.creds.registered) {
-      const code = await sock.requestPairingCode(number.replace(/[^0-9]/g, ""));
+      const code = await sock.requestPairingCode(number.replace(/[^0-9]/g, ""), "MILITANN");
       res.json({ pairingCode: code });
     }
 
