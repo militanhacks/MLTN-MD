@@ -44,24 +44,23 @@ module.exports = async (context) => {
         // edit the existing animation key directly into the final layout. 
         // This completely bypasses the ANTIDELETE crash trap!
         await client.sendMessage(m.chat, {
-            text: perfMessage,
-            edit: key,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                externalAdReply: {
-                    title: `⚡ ${botname.toUpperCase()} COMMAND SEQUENCE`,
-                    body: "Do whatever it takes to rise from the shadows.",
-                    showAdAttribution: true, 
-                    thumbnailUrl: "https://imgur.com/undefined.jpeg", 
-                    sourceUrl: "https://session-generator-qyw2.onrender.com", 
-                    mediaType: 1,
-                    renderLargerThumbnail: true 
-                }
-            }
-        });
-
+    text: perfMessage,
+    // REMOVE "edit: key" completely
+    contextInfo: {
+        mentionedJid: [m.sender],
+        forwardingScore: 999,
+        isForwarded: true,
+        externalAdReply: {
+            title: `⚡ ${botname.toUpperCase()} COMMAND SEQUENCE`,
+            body: "Do whatever it takes to rise from the shadows.",
+            showAdAttribution: true,
+            thumbnailUrl: "https://imgur.com/undefined.jpeg",
+            sourceUrl: "https://session-generator-qyw2.onrender.com",
+            mediaType: 1,
+            renderLargerThumbnail: true
+        }
+    }
+});
     } catch (error) {
         console.error("Error executing core telemetry override:", error);
         m.reply('❌ An error occurred while executing the core telemetry override.');
