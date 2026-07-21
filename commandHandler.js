@@ -51,13 +51,14 @@ commandFiles.forEach(file => {
   const commandModule = require(file); // Load the command module
 
   // Add metadata (aliases, description, reaction) to each command
-  commands[commandName] = {
-    execute: commandModule,
-    description: commandModule.description || "No description provided.",
-    aliases: commandModule.aliases || [],
-    reaction: commandModule.reaction || null, // Reaction type (if any)
-  };
-
+ // Now handles BOTH formats correctly
+if (typeof commandModule === 'function') {
+    commands[commandName] = {
+        execute: commandModule,  // ✅ Now works properly
+        description: commandModule.description || "No description provided.",
+        aliases: commandModule.aliases || [],
+    };
+}
   // Register aliases for the command
   if (commandModule.aliases && Array.isArray(commandModule.aliases)) {
     commandModule.aliases.forEach(alias => {
