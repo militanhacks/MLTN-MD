@@ -30,7 +30,7 @@
     "@mrnima/facebook-downloader": "1.0.0",
     "@mrnima/tiktok-downloader": "1.0.0",
     "@shineiichijo/marika": "^3.0.0",
-    "@whiskeysockets/baileys": "^6.7.23",
+    "@whiskeysockets/baileys": "6.5.0"
     "@xaviabot/fb-downloader": "^1.0.14",
     "acrcloud": "^1.4.0",
     "api-dylux": "^1.8.5",
