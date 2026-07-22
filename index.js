@@ -220,7 +220,7 @@ async function startMLTN() {
   const client = MLTNConnect({
     logger: pino({ level: "silent" }),
     printQRInTerminal: true,
-    version: [2, 3000, 1015901307],
+    version,
     browser: ["MLTN-MD", "Safari", "3.0"],
     fireInitQueries: false,
     shouldSyncHistoryMessage: true,
