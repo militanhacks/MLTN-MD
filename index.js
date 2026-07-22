@@ -46,7 +46,7 @@ authenticationn();
 const {
   default: MLTNConnect, BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent,
   generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, useMultiFileAuthState,
-  DisconnectReason, makeInMemoryStore, downloadContentFromMessage, jidDecode
+  DisconnectReason, makeInMemoryStore, downloadContentFromMessage, jidDecode, fetchLatestBaileysVersion
 } = require("@whiskeysockets/baileys");
 
 const pino = require("pino");
