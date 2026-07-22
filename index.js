@@ -217,6 +217,7 @@ let repliedContacts = new Set();
 async function startMLTN() {
   await downloadSession();
   const { saveCreds, state } = await useMultiFileAuthState("session");
+  const { version } = await fetchLatestBaileysVersion();
   const client = MLTNConnect({
     logger: pino({ level: "silent" }),
     printQRInTerminal: true,
